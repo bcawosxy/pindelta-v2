@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "pindelta-v2",
+    "description": "Pindelta.com ver.2",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
