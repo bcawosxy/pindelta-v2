@@ -1,3 +1,4 @@
+/*default*/
 .ecommerce .site-logo {
     padding-top: 20px;
     padding-bottom: 10px;
@@ -26,6 +27,7 @@
     background-color: #ec971f;
 }
 
+/*default RWD*/
 @media (min-width: 1025px) {
     .header .header-navigation {
         width: 100%;
@@ -48,5 +50,52 @@
 @media (max-width: 650px) {
     .ecommerce .header .mobi-toggler {
         margin: 35px 0 0 0;
+    }
+}
+
+/*fixed*/
+@media (min-width: 1025px) {
+    .ecommerce .reduce-header .site-logo {
+        display: none;
+    }
+    .ecommerce .reduce-header .header-navigation > ul > li > a {
+        padding: 10px 12px 10px;
+    }
+}
+
+/*建立 bootstrap 五欄樣式*/
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-xs-5ths {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .col-sm-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
     }
 }
