@@ -27,6 +27,14 @@
     background-color: #ec971f;
 }
 
+.product-item{
+    padding:6px;
+}
+
+.product-item:hover{
+    box-shadow:none;
+}
+
 /*default RWD*/
 @media (min-width: 1025px) {
     .header .header-navigation {
@@ -70,8 +78,8 @@
 .col-lg-5ths {
     position: relative;
     min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .col-xs-5ths {
