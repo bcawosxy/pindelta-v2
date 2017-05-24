@@ -8,9 +8,9 @@
         </div>
         <div class="header-navigation margin-bottom-5">
             <ul>
-                <li><a href="">Home</a></li>
+                <li><a href="{{url('')}}">Home</a></li>
                 <li><a href="{{url('about')}}">About Us</a></li>
-                <li><a href="">Products</a></li>
+                <li><a href="{{url('')}}">Products</a></li>
                 <li><a href="{{url('contact')}}">Coutact Us</a></li>
             </ul>
         </div>

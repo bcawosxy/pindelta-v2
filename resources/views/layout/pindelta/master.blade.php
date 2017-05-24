@@ -47,4 +47,5 @@
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
+@yield('foot')
 </html>

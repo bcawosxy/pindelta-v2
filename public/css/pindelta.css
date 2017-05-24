@@ -35,6 +35,23 @@
     box-shadow:none;
 }
 
+.product-item h3 {
+     text-transform:none;
+}
+
+.product-item h3 a {
+    color: #e84d1c;
+    font-weight: bold;
+    font-size:1.1em;
+    word-break: break-all;
+}
+
+.pi-description {
+    color:black;
+    letter-spacing: 0.3px;
+    font: 16px 'Lucida Grande', serif;
+}
+
 /*default RWD*/
 @media (min-width: 1025px) {
     .header .header-navigation {
@@ -77,7 +94,6 @@
 .col-md-5ths,
 .col-lg-5ths {
     position: relative;
-    min-height: 1px;
     padding-right: 10px;
     padding-left: 10px;
 }
