@@ -29,7 +29,8 @@
             </div>
             <div class="login-box-body">
                 <p class="login-box-msg">Sign in to start your work!</p>
-                <form action="javascript:void(0)" method="post">
+                <form method="POST" action="#">
+                    {{ csrf_field() }}
                     <div class="form-group has-feedback">
                         <input type="text" class="form-control" id="account" placeholder="Account">
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
