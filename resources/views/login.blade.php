@@ -29,15 +29,25 @@
             </div>
             <div class="login-box-body">
                 <p class="login-box-msg">Sign in to start your work!</p>
-                <form method="POST" action="#">
+                <form role="form" method="POST" action="{{ url('login') }}">
                     {{ csrf_field() }}
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" id="account" placeholder="Account">
+                        <input type="text" name="account" class="form-control" id="account" value="{{ old('account') }}" placeholder="Account" required autofocus>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        @if ($errors->has('account'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('account') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" id="password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        @if ($errors->has('password'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="">

@@ -32,25 +32,25 @@
     <!-- Fonts END -->
 
     <!-- Global styles START -->
-    <link href="template/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="template/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ URL::asset('template/plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Global styles END -->
 
     <!-- Page level plugin styles START -->
-    <link href="template/pages/css/animate.css" rel="stylesheet">
-    <link href="template/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
-    <link href="template/plugins/owl.carousel/assets/owl.carousel.css" rel="stylesheet">
+    <link href="{{ URL::asset('template/pages/css/animate.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/plugins/fancybox/source/jquery.fancybox.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/plugins/owl.carousel/assets/owl.carousel.css')}}" rel="stylesheet">
     <!-- Page level plugin styles END -->
 
     <!-- Theme styles START -->
-    <link href="template/pages/css/components.css" rel="stylesheet">
-    <link href="template/pages/css/slider.css" rel="stylesheet">
-    <link href="template/pages/css/style-shop.css" rel="stylesheet" type="text/css">
-    <link href="template/corporate/css/style.css" rel="stylesheet">
-    <link href="template/corporate/css/style-responsive.css" rel="stylesheet">
-    <link href="template/corporate/css/themes/red.css" rel="stylesheet" id="style-color">
-    <link href="template/corporate/css/custom.css" rel="stylesheet">
-    <link href="css/pindelta.css" rel="stylesheet">
+    <link href="{{ URL::asset('template/pages/css/components.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/pages/css/slider.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/pages/css/style-shop.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('template/corporate/css/style.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/corporate/css/style-responsive.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('template/corporate/css/themes/red.css')}}" rel="stylesheet" id="style-color">
+    <link href="{{ URL::asset('template/corporate/css/custom.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('css/pindelta.css')}}" rel="stylesheet">
     <!-- Theme styles END -->
 </head>
 <!-- Head END -->

@@ -15,3 +15,12 @@ Route::get('/contact', function () {
 Route::get('/login', function () {
     return view('login');
 });
+
+
+//admin
+Route::get('/admin', function () {
+    return view('admin.index');
+});
+Route::get('/admin/about', function () {
+    return view('admin.about');
+});
