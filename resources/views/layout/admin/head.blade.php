@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="{{ URL::asset('adminlte/adminlte/css/AdminLTE.min.css')}}">
     <link rel="stylesheet" href="{{ URL::asset('adminlte/plugins/icheck/all.css')}}">
     <link rel="stylesheet" href="{{ URL::asset('adminlte/plugins/font-awesome/css/font-awesome.css')}}">
+    <link rel="stylesheet" href="{{ URL::asset('adminlte/plugins/datatables/dataTables.bootstrap.css')}}">
+    <link rel="stylesheet" href="{{ URL::asset('adminlte/plugins/icheck/minimal/minimal.css')}}">
+    <link rel="stylesheet" href="{{ URL::asset('js/jquery-file-upload/css/jquery.fileupload.css')}}">
+    <link rel="stylesheet" href="{{ URL::asset('adminlte/plugins/select2/select2.min.css')}}">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
