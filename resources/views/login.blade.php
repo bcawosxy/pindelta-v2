@@ -31,23 +31,18 @@
                 <p class="login-box-msg">Sign in to start your work!</p>
                 <form role="form" method="POST" action="{{ url('login') }}">
                     {{ csrf_field() }}
-                    <div class="form-group has-feedback">
-                        <input type="text" name="account" class="form-control" id="account" value="{{ old('account') }}" placeholder="Account" required autofocus>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                        @if ($errors->has('account'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('account') }}</strong>
+                    @if ($errors->has('msg'))
+                        <span class="help-block">
+                                <div class="alert alert-danger">{{$errors->first('msg')}}</div>
                             </span>
-                        @endif
+                    @endif
+                    <div class="form-group has-feedback">
+                        <input type="text" name="account" class="form-control" id="account" value="admin" placeholder="Account" required autofocus>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <input type="password" class="form-control" id="password" name="password" value="123456" placeholder="Password" required>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                        @if ($errors->has('password'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                        @endif
                     </div>
                     <div class="row">
                         <div class="">

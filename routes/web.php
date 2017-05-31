@@ -1,5 +1,7 @@
 <?php
 
+//use Illuminate\Http\Response;
+
 Route::get('/', function () {
     return view('index');
 });
@@ -12,9 +14,9 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/login', ['as' => 'login' , function () {
-    return view('login');
-}]);
+Route::get('/login', ['as' => 'login' , 'uses' => 'PindeltaController@ShowLoginPage']);
+
+Route::post('login', ['uses' => 'PindeltaController@login']);
 
 //Admin Route Group
 Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
@@ -57,6 +59,9 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //管理員清單
     Route::get('/admins', ['as'=> 'admins', 'uses'=> 'AdminController@admins']) ;
+
+    //登出
+    Route::get('/logout', ['as'=> 'logout', 'uses'=> 'AdminController@logout']) ;
 
     //test
     Route::get('/test', ['as' => 'test', 'uses'=> 'AdminController@showTestMessage']);

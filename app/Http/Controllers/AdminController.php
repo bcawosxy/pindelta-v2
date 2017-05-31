@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('test', ['except' => ['showTestMessage']]);
+        $this->middleware('adminlogin', ['except' => ['showTestMessage', 'logout']]);
     }
 
     public function showTestMessage() {
-        return 'This is Test Page : '.route('admin::test');
+        $a = '<p>This is Test Page : '.route('admin::test').'</p>';
+        return $a;
     }
 
     public function about()
@@ -68,6 +70,11 @@ class AdminController extends Controller
     public function inquiry_edit()
     {
         return view('admin.inquiry_edit');
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('login');
     }
 
     public function product()
