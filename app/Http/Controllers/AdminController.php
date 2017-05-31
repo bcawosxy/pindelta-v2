@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -19,7 +20,15 @@ class AdminController extends Controller
 
     public function about()
     {
-        return view('admin.about');
+        $about = DB::table('about')->where('category', 'about_c')->first();
+
+        $data = [
+            'value' =>  $about->value,
+            'updated_at' => ($about->updated_at == null) ? '無' : $about->updated_at,
+            'modify_name' => ($about->modify_name == null) ? '無' : $about->modify_name,
+        ];
+
+        return view('admin.about', ['data' => $data]);
     }
 
     public function admins()
