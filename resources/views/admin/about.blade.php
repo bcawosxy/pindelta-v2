@@ -40,13 +40,11 @@
                                 height: '400px'
                             });
                     </script><br>
-
                     <a class="btn btn-app " id="save">
                         <i class="fa fa-save"></i> Save
                     </a>
                     <input type="submit" id="s_save" style="display: none;">
                 </form>
-
             </div>
             <div class="box-footer">
                 最後修改時間<p class="text-light-blue">{{$data['updated_at']}}</p>修改人員<p class="text-light-blue">Vera-Fu</p>
@@ -57,7 +55,6 @@
 @endsection()
 
 @section('foot')
-
 <script type="text/javascript">
     $(function () {
         $('#save').on('click', function(){
@@ -81,7 +78,5 @@
             });
         });
     })
-
-
 </script>
 @endsection
