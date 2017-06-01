@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\About;
+use App\Categoryarea;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -23,7 +24,7 @@ class AdminController extends Controller
             'modify_name' => ($about->modify_name == null) ? '無' : $about->modify_name,
         ];
 
-        return view('admin.about', ['data' => $data, 'return' => null]);
+        return view('admin.about', ['data' => $data]);
     }
 
     public function aboutEdit(Request $request) {
@@ -47,10 +48,28 @@ class AdminController extends Controller
 
     public function categoryarea()
     {
-        return view('admin.categoryarea');
+        $categoryarea = Categoryarea::where('status', '!=', 'delete')->orderBy('updated_at', 'desc')->get();
+
+        if($categoryarea) {
+            foreach ($categoryarea as $k0 => $v0) {
+                $data[] = [
+                    'id' => $v0->id,
+                    'name' => $v0->name,
+                    'priority' => $v0->priority,
+                    'description' => $v0->description,
+                    'cover' => $v0->cover,
+                    'modify_name' => $v0->modify_name,
+                    'status' => $v0->status,
+                    'created_at' => $v0->created_at,
+                    'updated_at' => $v0->updated_at->toDateTimeString(),
+                ];
+            }
+        }
+
+        return view('admin.categoryarea', ['data' => $data]);
     }
 
-    public function categoryarea_edi0t()
+    public function categoryarea_edit()
     {
         return view('admin.categoryarea_edit');
     }
