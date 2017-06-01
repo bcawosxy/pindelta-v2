@@ -30,7 +30,7 @@
     <section class="content">
         <div class="box">
             <div class="box-body">
-                <form method="post">
+                <form method="POST">
                     <textarea  id="about_value" name="about_value" class="ckeditor">{{$data['value']}}</textarea>
                     <script type="text/javascript">
                         CKEDITOR.replace('about_value',
@@ -40,9 +40,11 @@
                                 height: '400px'
                             });
                     </script><br>
+
                     <a class="btn btn-app " id="save">
                         <i class="fa fa-save"></i> Save
                     </a>
+                    <input type="submit" id="s_save" style="display: none;">
                 </form>
 
             </div>
@@ -57,6 +59,29 @@
 @section('foot')
 
 <script type="text/javascript">
+    $(function () {
+        $('#save').on('click', function(){
+            $.ajax({
+                url: '{{url('admin/about')}}',
+                type: 'post',
+                data: {
+                    value : CKEDITOR.instances['about_value'].getData(),
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function (r) {
+                    _swal(r);
+                },
+                error : function (r) {
+                    r = r.responseJSON;
+                    _swal(r);
+                },
+            });
+        });
+    })
+
 
 </script>
 @endsection

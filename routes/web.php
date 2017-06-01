@@ -25,6 +25,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //關於品利興
     Route::get('/about', ['as' => 'about', 'uses'=> 'AdminController@about']) ;
+    Route::post('/about', ['as' => 'about', 'uses'=> 'AdminController@aboutEdit']) ;
 
     //產品類別
     Route::get('/categoryarea', ['as'=> 'categoryarea', 'uses'=> 'AdminController@categoryarea']) ;
@@ -63,8 +64,6 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     //登出
     Route::get('/logout', ['as'=> 'logout', 'uses'=> 'AdminController@logout']) ;
 
-    //test
-    Route::get('/test', ['as' => 'test', 'uses'=> 'AdminController@showTestMessage']);
 });
 
 

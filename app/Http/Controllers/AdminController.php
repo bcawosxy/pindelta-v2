@@ -3,24 +3,19 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use DB;
+use App\About;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('adminlogin', ['except' => ['showTestMessage', 'logout']]);
-    }
-
-    public function showTestMessage() {
-        $a = '<p>This is Test Page : '.route('admin::test').'</p>';
-        return $a;
+        $this->middleware('adminlogin', ['except' => ['logout']]);
     }
 
     public function about()
     {
-        $about = DB::table('about')->where('category', 'about_c')->first();
+        $about = About::where('category', 'about_c')->first();
 
         $data = [
             'value' =>  $about->value,
@@ -28,7 +23,21 @@ class AdminController extends Controller
             'modify_name' => ($about->modify_name == null) ? '無' : $about->modify_name,
         ];
 
-        return view('admin.about', ['data' => $data]);
+        return view('admin.about', ['data' => $data, 'return' => null]);
+    }
+
+    public function aboutEdit(Request $request) {
+        $result = About::where('category', 'about_c')->update(['value'=>$request->value]);
+
+        if($result) {
+            $status = 200;
+            $content = ['message' => '修改完成', 'redirect' => url()->route('admin::about')];
+        } else {
+            $status = 401;
+            $content = ['status'=> 0,  'message' => '修改失敗，請重新操作。', 'redirect' => url()->route('admin::about')];
+        }
+
+        return response($content, $status)->header('Content-Type', 'application/json');
     }
 
     public function admins()
@@ -41,7 +50,7 @@ class AdminController extends Controller
         return view('admin.categoryarea');
     }
 
-    public function categoryarea_edit()
+    public function categoryarea_edi0t()
     {
         return view('admin.categoryarea_edit');
     }

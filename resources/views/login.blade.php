@@ -33,8 +33,8 @@
                     {{ csrf_field() }}
                     @if ($errors->has('msg'))
                         <span class="help-block">
-                                <div class="alert alert-danger">{{$errors->first('msg')}}</div>
-                            </span>
+                            <div class="alert alert-danger">{{$errors->first('msg')}}</div>
+                        </span>
                     @endif
                     <div class="form-group has-feedback">
                         <input type="text" name="account" class="form-control" id="account" value="admin" placeholder="Account" required autofocus>

@@ -26,7 +26,28 @@
     <script src="{{ URL::asset('js/jquery-file-upload/js/jquery.iframe-transport.js')}}" type="text/javascript"></script>
     <script src="{{ URL::asset('js/jquery-file-upload/js/jquery.fileupload.js')}}" type="text/javascript"></script>
     <script src="{{ URL::asset('adminlte/plugins/select2/select2.full.min.js')}}" type="text/javascript"></script>
+    <script src="{{ URL::asset('js/sweet-alert2/js/sweet-alert2.min.js')}}" type="text/javascript"></script>
 
 </body>
+<script>
+    function _swal(r) {
+        switch (r.status) {
+            case 0 : status = 'error'; break;
+            case 2 : status = 'warning'; break;
+            case 3 : status = 'info'; break;
+            case 4 : status = 'question'; break;
+            default : status = 'success'; break;
+        }
+
+        swal({
+            'text' : r.message,
+            'type' : status,
+            'timer': 2000,
+        }).then(
+            function () { if(r.redirect) location.href = r.redirect; },
+            function (dismiss) { if(r.redirect) location.href = r.redirect; }
+        ).catch(swal.noop);
+    }
+</script>
 @yield('foot')
 </html>
