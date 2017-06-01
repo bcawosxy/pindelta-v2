@@ -32,7 +32,7 @@
                         <div class="box-header">
                         </div>
                         <div class="box-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="categoryarea" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,7 +44,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach ($data as $v0)
+                                        <tr>
+                                            <td>{{$v0['id']}}</td>
+                                            <td><a href="{{url()->route('admin::categoryarea_edit', [$v0['id']])}}">編輯</a></td>
+                                            <td>{{$v0['name']}}</td>
+                                            <td>{{$v0['priority']}}</td>
+                                            <td>{{$v0['description']}}</td>
+                                            <td>{!! $v0['status'] == 'open' ? '<span class="label label-success">Open</span>' : '<span class="label label-warning">Close</span>' !!}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -60,14 +69,10 @@
 @endsection()
 
 @section('foot')
-
-
-
 <script type="text/javascript">
     $(function () {
-        $("#example1").DataTable({
+        $("#categoryarea").DataTable({
             "order": [[ 0, "desc" ]],
-
         });
     });
 </script>
