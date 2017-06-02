@@ -150,7 +150,31 @@
                 var r = {'status': 0, 'message': '排序須輸入正整數。'};
                 _swal(r);
             } else {
-                //ready to save...
+                $.ajax({
+                    url : '{{  url("admin/categoryarea/edit") }}',
+                    type: 'post',
+                    data: {
+                        id : "{{ $data['categoryarea']['id'] }}",
+                        act : "{{ $data['act'] }}",
+                        name : $('input[name="name"]').val(),
+                        priority : priority.val(),
+                        status : $('input[name="status"]:checked').val(),
+                        description : $('input[name="description"]').val(),
+                        cover : $('#cover').attr('alt'),
+                        cover_state : $('#cover').data('state'),
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function (r) {
+                        _swal(r);
+                    },
+                    error: function (r) {
+                        r = r.responseJSON;
+                        _swal(r);
+                    },
+                });
             }
         });
     });

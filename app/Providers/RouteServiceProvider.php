@@ -17,15 +17,15 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'App\Http\Controllers';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
+    * Define your route model bindings, pattern filters, etc.
+    *
+    * @return void
+    */
     public function boot()
     {
-       /**
-        *  #Mars - 規定進入route且參數名稱為 id 的內容都必須是數字。此數還需捕捉例外狀況...
-        */
+        /**
+         *  #Mars - 規定進入route且參數名稱為 id 的內容都必須是數字。此處還需取得非數字的例外狀況...
+         */
 
         Route::pattern('id', '[0-9]+');
         parent::boot();

@@ -104,6 +104,17 @@ class AdminController extends Controller
         return view('admin.categoryarea_content', ['data' => $data]);
     }
 
+    public function categoryareaEdit(Request $request)
+    {
+        $id = $request->id;
+        $name = $request->name;
+
+        $status = 401;
+        $content = ['status'=> 0, 'message' => '修改失敗，請重新操作。', 'redirect' => url()->route('admin::categoryarea_content', ['id'=>$id])];
+
+        return response($content, $status)->header('Content-Type', 'application/json');
+    }
+
     public function category()
     {
         return view('admin.category');
