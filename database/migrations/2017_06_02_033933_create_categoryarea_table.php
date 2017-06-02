@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAboutsTable extends Migration
+class CreateCategoryareaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateAboutsTable extends Migration
      */
     public function up()
     {
-        Schema::create('about', function (Blueprint $table) {
+        Schema::create('categoryarea', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('category');
-            $table->text('value');
-            $table->enum('status', ['open', 'close']);
-            $table->string('modify_name');
+            $table->string('name');
+            $table->tinyInteger('priority');
+            $table->string('description');
+            $table->string('cover');
+            $table->integer('modify_id');
+            $table->enum('status', ['open', 'close', 'delete']);
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateAboutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('about');
+        Schema::dropIfExists('categoryarea');
     }
 }

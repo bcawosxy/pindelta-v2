@@ -9,7 +9,7 @@
         @yield('content')
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2015-2016 <a href="#"> Memorable Supplier</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; 2015-2016 <a href="{{url('')}}"> Memorable Supplier</a>.</strong> All rights reserved.
         </footer>
     </div>
 

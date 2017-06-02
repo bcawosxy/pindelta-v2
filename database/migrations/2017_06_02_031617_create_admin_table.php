@@ -19,7 +19,7 @@ class CreateAdminTable extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('email');
-            $table->timestamp('modify_time');
+            $table->integer('modify_id');
             $table->ipAddress('ip');
             $table->string('remember_token', 100)->nullable();
             $table->timestamps();

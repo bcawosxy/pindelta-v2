@@ -16,13 +16,19 @@ class AdminController extends Controller
 
     public function about()
     {
-        $about = About::where('category', 'about_c')->first();
+        $data = [];
+        $about = About::where('category', 'about_c')
+                    ->select('about.*', 'admin.name as admin_name')
+                    ->leftJoin('admin', 'about.modify_id', '=', 'admin.id')
+                    ->first();
 
-        $data = [
-            'value' =>  $about->value,
-            'updated_at' => ($about->updated_at == null) ? '無' : $about->updated_at,
-            'modify_name' => ($about->modify_name == null) ? '無' : $about->modify_name,
-        ];
+        if($about) {
+            $data = [
+                'value' => ($about->value) ? $about->value : null,
+                'updated_at' => ($about->updated_at) ? $about->updated_at : null,
+                'modify_name' => ($about->admin_name) ? $about->admin_name : null,
+            ];
+        }
 
         return view('admin.about', ['data' => $data]);
     }
@@ -48,8 +54,8 @@ class AdminController extends Controller
 
     public function categoryarea()
     {
+        $data = [];
         $categoryarea = Categoryarea::where('status', '!=', 'delete')->orderBy('updated_at', 'desc')->get();
-
         if($categoryarea) {
             foreach ($categoryarea as $k0 => $v0) {
                 $data[] = [
@@ -69,9 +75,33 @@ class AdminController extends Controller
         return view('admin.categoryarea', ['data' => $data]);
     }
 
-    public function categoryarea_edit()
+    public function categoryarea_content($id = null)
     {
-        return view('admin.categoryarea_edit');
+        $act = (is_null($id)) ? 'add' : 'edit';
+        $categoryarea = null;
+        if(!is_null($id)) {
+            $e_categoryarea = Categoryarea::where('status', '!=', 'delete')->where('id', $id)->get();
+
+            foreach ($e_categoryarea as $k0 => $v0) {
+                $categoryarea = [
+                    'id' => $v0->id,
+                    'name' => $v0->name,
+                    'priority' => (int)$v0->priority,
+                    'description' => $v0->description,
+                    'cover' => $v0->cover,
+                    'modify_id' => $v0->modify_id,
+                    'status' => $v0->status,
+                    'created_at' => $v0->created_at,
+                    'updated_at' => $v0->updated_at,
+                ];
+            }
+        }
+
+        $data = [
+          'act' => $act,
+          'categoryarea' => $categoryarea,
+        ];
+        return view('admin.categoryarea_content', ['data' => $data]);
     }
 
     public function category()

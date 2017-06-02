@@ -30,7 +30,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     //產品類別
     Route::get('/categoryarea', ['as'=> 'categoryarea', 'uses'=> 'AdminController@categoryarea']) ;
     //產品類別管理
-    Route::get('/categoryarea/edit', ['as'=> 'categoryarea_edit', 'uses'=> 'AdminController@categoryarea_edit']) ;
+    Route::get('/categoryarea/content/{id?}', ['as'=> 'categoryarea_content', 'uses'=> 'AdminController@categoryarea_content']);
 
     //產品項目
     Route::get('/category', ['as'=> 'category', 'uses'=> 'AdminController@category']) ;

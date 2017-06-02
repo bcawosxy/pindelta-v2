@@ -16,7 +16,8 @@ class AdminTableSeeder extends Seeder
             'password' => Hash::make('123456'),
             'name' => 'admin',
             'email'    => 'admin@mail.com',
-            'modify_time'    => '2017-06-01 03:13:30',
+            'modify_id' => 1,
+            'updated_at'    => '2017-06-01 03:13:30',
             'ip' => '1.1.1.1',
         ]);
     }

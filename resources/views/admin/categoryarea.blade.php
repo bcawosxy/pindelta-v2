@@ -20,7 +20,7 @@
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{ url()->route('admin::index')  }}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">產品類別管理</li>
         </ol>
     </section>
@@ -47,7 +47,7 @@
                                     @foreach ($data as $v0)
                                         <tr>
                                             <td>{{$v0['id']}}</td>
-                                            <td><a href="{{url()->route('admin::categoryarea_edit', [$v0['id']])}}">編輯</a></td>
+                                            <td><a href="{{url()->route('admin::categoryarea_content', ['id' => $v0['id'] ])}}">編輯</a></td>
                                             <td>{{$v0['name']}}</td>
                                             <td>{{$v0['priority']}}</td>
                                             <td>{{$v0['description']}}</td>
@@ -57,7 +57,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a class="btn btn-app " id="add" href="{{url('admin/categoryarea/edit')}}">
+                        <a class="btn btn-app " id="add" href="{{url()->route('admin::categoryarea_content')}}">
                             <i class="fa fa-plus-square-o"></i> Add
                         </a>
                     </div>

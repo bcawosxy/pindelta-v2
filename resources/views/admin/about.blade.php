@@ -23,7 +23,7 @@
             <small><p class="text-light-blue">(建議上傳圖片格式: PNG / JPEG / JPG)</p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href=" {{ url()->route('admin::index')  }} "><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">關於品利興</li>
         </ol>
     </section>
@@ -47,7 +47,7 @@
                 </form>
             </div>
             <div class="box-footer">
-                最後修改時間<p class="text-light-blue">{{$data['updated_at']}}</p>修改人員<p class="text-light-blue">Vera-Fu</p>
+                最後修改時間<p class="text-light-blue">{{$data['updated_at']}}</p>修改人員<p class="text-light-blue">{{$data['modify_name']}}</p>
             </div>
         </div>
     </section>
