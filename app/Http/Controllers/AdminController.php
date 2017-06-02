@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('adminlogin', ['except' => ['logout']]);
@@ -34,7 +35,8 @@ class AdminController extends Controller
     }
 
     public function aboutEdit(Request $request) {
-        $result = About::where('category', 'about_c')->update(['value'=>$request->value]);
+        $user = Auth::user();
+        $result = About::where('category', 'about_c')->update(['value'=>$request->value, 'modify_id'=>$user->id]);
 
         if($result) {
             $status = 200;
@@ -106,11 +108,36 @@ class AdminController extends Controller
 
     public function categoryareaEdit(Request $request)
     {
+        $user = Auth::user();
         $id = $request->id;
+        $act = $request->act;
         $name = $request->name;
+        $priority = $request->priority;
+        $status = $request->status;
+        $description = $request->description;
 
-        $status = 401;
-        $content = ['status'=> 0, 'message' => '修改失敗，請重新操作。', 'redirect' => url()->route('admin::categoryarea_content', ['id'=>$id])];
+        $edit = [
+            'name'  => $name,
+            'priority' => $priority,
+            'status' => $status,
+            'description' => $description,
+            'modify_id' => $user->id,
+        ];
+
+        if($act == 'add') {
+
+        } else {
+            $result = Categoryarea::where('id', $id)->update($edit);
+        }
+
+        if($result) {
+            $status = 200;
+            $content = ['message' => '修改完成', 'redirect' => url()->route('admin::categoryarea_content', ['id' => $id])];
+        } else {
+            $status = 401;
+            $content = ['status'=> 0, 'message' => '修改失敗，請重新操作。', 'redirect' => url()->route('admin::categoryarea_content', ['id'=>$id])];
+        }
+
 
         return response($content, $status)->header('Content-Type', 'application/json');
     }

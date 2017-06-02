@@ -45,11 +45,11 @@
                             <div class="box-body">
                                 <dl class="dl-horizontal">
                                     <dt>編號:</dt>
-                                    <dd># {{  $data['categoryarea']['id'] or '1' }}</dd>
+                                    <dd>#{{  $data['categoryarea']['id'] or '1' }}</dd>
                                     <br>
                                     <dt>名稱:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" style="width:30%" value=" {{  $data['categoryarea']['name'] or null }} ">
+                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" style="width:30%" value="{{  $data['categoryarea']['name'] or null }}">
                                     </dd>
                                     <br>
                                     <dt>排序:</dt>
@@ -73,7 +73,7 @@
                                     <br>
                                     <dt>介紹:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value=" {{$data['categoryarea']['description'] or null }} ">
+                                        <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['categoryarea']['description'] or null }}">
                                     </dd>
                                     <br>
                                     <dt>封面:</dt>
@@ -160,8 +160,8 @@
                         priority : priority.val(),
                         status : $('input[name="status"]:checked').val(),
                         description : $('input[name="description"]').val(),
-                        cover : $('#cover').attr('alt'),
-                        cover_state : $('#cover').data('state'),
+//                        cover : $('#cover').attr('alt'),
+//                        cover_state : $('#cover').data('state'),
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
