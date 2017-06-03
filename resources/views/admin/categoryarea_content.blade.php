@@ -109,6 +109,11 @@
                                         <p class="text-muted">{{ $data['categoryarea']['updated_at'] or null }}</p>
                                     </dd>
                                     <br>
+                                    <dt>修改人員:</dt>
+                                    <dd>
+                                        <p class="text-light-blue">{{$data['categoryarea']['admin_name']}}</p>
+                                    </dd>
+                                    <br>
                                 </dl>
                             </div>
                         </div>

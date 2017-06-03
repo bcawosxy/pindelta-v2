@@ -56,6 +56,7 @@ class AdminController extends Controller
 
     public function categoryarea()
     {
+        $user = Auth::user();
         $data = [];
         $categoryarea = Categoryarea::where('status', '!=', 'delete')->orderBy('updated_at', 'desc')->get();
         if($categoryarea) {
@@ -82,7 +83,11 @@ class AdminController extends Controller
         $act = (is_null($id)) ? 'add' : 'edit';
         $categoryarea = null;
         if(!is_null($id)) {
-            $e_categoryarea = Categoryarea::where('status', '!=', 'delete')->where('id', $id)->get();
+            $e_categoryarea = Categoryarea::where('status', '!=', 'delete')
+                ->select('categoryarea.*', 'admin.name as admin_name')
+                ->where('categoryarea.id', $id)
+                ->leftJoin('admin', 'categoryarea.modify_id', '=', 'admin.id')
+                ->get();
 
             foreach ($e_categoryarea as $k0 => $v0) {
                 $categoryarea = [
@@ -95,6 +100,7 @@ class AdminController extends Controller
                     'status' => $v0->status,
                     'created_at' => $v0->created_at,
                     'updated_at' => $v0->updated_at,
+                    'admin_name' => $v0->admin_name,
                 ];
             }
         }
