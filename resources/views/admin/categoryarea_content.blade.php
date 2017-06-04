@@ -148,6 +148,33 @@
             radioClass: 'iradio_minimal-red'
         });
 
+        $('#fileupload').fileupload({
+            url: "{{ url()->route('admin::categoryarea_u')  }}",
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            done: function (e, data) {
+                console.log('done');
+//                $.each(data.result.files, function (index, file) {
+//                    $('#cover').attr({'alt': file.name,'src':'/'+file.name}).data('state', 'new');
+//                });
+            },
+            progressall: function (e, data) {
+                console.log('pro');
+//                var progress = parseInt(data.loaded / data.total * 100, 10);
+//                $('#progress .progress-bar').css(
+//                    'width',
+//                    progress + '%'
+//                );
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+            checkboxClass: 'icheckbox_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+
         $('#save').on('click', function(){
             var priority = $('input[name=priority]');
 

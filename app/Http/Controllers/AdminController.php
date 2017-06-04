@@ -148,6 +148,11 @@ class AdminController extends Controller
         return response($content, $status)->header('Content-Type', 'application/json');
     }
 
+    public function categoryarea_u()
+    {
+        return 123;
+    }
+
     public function category()
     {
         return view('admin.category');
