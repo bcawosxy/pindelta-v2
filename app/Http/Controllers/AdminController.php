@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\About;
 use App\Categoryarea;
+use UploadHandlerProvider;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -148,9 +149,18 @@ class AdminController extends Controller
         return response($content, $status)->header('Content-Type', 'application/json');
     }
 
-    public function categoryarea_u()
+    public function categoryarea_u(Request $request)
     {
-        return 123;
+
+        $return = null;
+        if(class_exists('UploadHandlerProvider')) {
+            $return = 'Y';
+        } else {
+            $return = 'N';
+        }
+
+
+        return $return;
     }
 
     public function category()
