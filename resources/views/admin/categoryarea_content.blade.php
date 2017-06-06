@@ -151,18 +151,14 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             done: function (e, data) {
-                console.log('done');
-//                $.each(data.result.files, function (index, file) {
-//                    $('#cover').attr({'alt': file.name,'src':'/'+file.name}).data('state', 'new');
-//                });
+//                var img = 'http://dev.pinpin.com/upload/pinpinbox/diy/20170505/590c1c211e199.jpg';
+                $.each(data.result.files, function (index, file) {
+                    $('#cover').attr({'alt': file.url, 'src': file.url }).data('state', 'new');
+                });
             },
             progressall: function (e, data) {
-                console.log('pro');
-//                var progress = parseInt(data.loaded / data.total * 100, 10);
-//                $('#progress .progress-bar').css(
-//                    'width',
-//                    progress + '%'
-//                );
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css('width', progress + '%');
             }
         }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 

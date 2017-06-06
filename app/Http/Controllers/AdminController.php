@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Library\UploadHandler;
 use Auth;
 use App\About;
 use App\Categoryarea;
@@ -168,11 +169,9 @@ class AdminController extends Controller
         return view('admin.contact_edit');
     }
 
-    public function fileUpload( )
+    public function fileUpload(Request $request)
     {
-        $return = null;
-        $FmyFunctions1 = new \App\Library\UploadHandler;
-        return  $return;
+        $upload = new UploadHandler();
     }
 
     public function index()

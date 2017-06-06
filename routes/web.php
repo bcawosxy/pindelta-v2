@@ -20,6 +20,10 @@ Route::post('login', ['uses' => 'PindeltaController@login']);
 
 //Admin Route Group
 Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
+    Route::get('/test', function (){
+        return URL::asset('adminlte/plugins/icheck/minimal/minimal.css');
+    });
+
     // index , 圖表
     Route::get('/', ['as' => 'index', 'uses'=> 'AdminController@index']) ;
 
