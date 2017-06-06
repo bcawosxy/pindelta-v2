@@ -151,9 +151,9 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             done: function (e, data) {
-//                var img = 'http://dev.pinpin.com/upload/pinpinbox/diy/20170505/590c1c211e199.jpg';
                 $.each(data.result.files, function (index, file) {
-                    $('#cover').attr({'alt': file.url, 'src': file.url }).data('state', 'new');
+                    var target = '<?php echo URL('upload/files'); ?>/';
+                    $('#cover').attr({'alt': file.name , 'src': target + file.name }).data('state', 'new');
                 });
             },
             progressall: function (e, data) {
@@ -184,15 +184,15 @@
                         priority : priority.val(),
                         status : $('input[name="status"]:checked').val(),
                         description : $('input[name="description"]').val(),
-//                        cover : $('#cover').attr('alt'),
-//                        cover_state : $('#cover').data('state'),
+                        cover : $('#cover').attr('alt'),
+                        cover_state : $('#cover').data('state'),
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     dataType: 'json',
                     success: function (r) {
-                        _swal(r);
+//                        _swal(r);
                     },
                     error: function (r) {
                         r = r.responseJSON;

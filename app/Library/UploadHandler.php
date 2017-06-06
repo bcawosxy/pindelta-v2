@@ -12,7 +12,6 @@
 namespace App\Library;
 class UploadHandler
 {
-
     protected $options;
 
     // PHP File Upload error message codes:
@@ -45,8 +44,8 @@ class UploadHandler
         $this->response = array();
         $this->options = array(
             'script_url' => $this->get_full_url().'/',
-            'upload_dir' => $upload_dir.'/public/files/',
-            'upload_url' => $this->get_full_url().'/public/files/',
+            'upload_dir' => $upload_dir.'/public/upload/files/',
+            'upload_url' => $this->get_full_url().'/public/upload/files/',
             'user_dirs' => false,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
