@@ -14,7 +14,6 @@
 
 @section('content')
 <div class="content-wrapper" style="height: auto;">
-
     <section class="content-header">
         <div class="box-body"><h2>產品類別管理</h2></div>
         <h1>
@@ -25,7 +24,6 @@
             <li class="active">產品類別管理</li>
         </ol>
     </section>
-
     <section class="content">
         <div class="box">
             <div class="box-body">
@@ -133,8 +131,6 @@
             <a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>
         @endif
     </section>
-
-
 </div>
 @endsection()
 
@@ -149,7 +145,7 @@
         });
 
         $('#fileupload').fileupload({
-            url: "{{ url()->route('admin::categoryarea_u')  }}",
+            url: "{{ url()->route('admin::fileUpload')  }}",
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

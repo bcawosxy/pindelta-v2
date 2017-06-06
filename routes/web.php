@@ -31,7 +31,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     Route::get('/categoryarea', ['as'=> 'categoryarea', 'uses'=> 'AdminController@categoryarea']) ;
     Route::get('/categoryarea/content/{id?}', ['as'=> 'categoryarea_content', 'uses'=> 'AdminController@categoryarea_content']);
     Route::post('/categoryarea/edit/', ['uses'=> 'AdminController@categoryareaEdit']) ;
-    Route::post('/categoryarea_u/', ['as' => 'categoryarea_u', 'uses'=> 'AdminController@categoryarea_u']) ;
+
 
     //產品項目
     Route::get('/category', ['as'=> 'category', 'uses'=> 'AdminController@category']) ;
@@ -65,6 +65,8 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     //登出
     Route::get('/logout', ['as'=> 'logout', 'uses'=> 'AdminController@logout']) ;
 
+    //檔案上傳
+    Route::post('/fileUpload/', ['as' => 'fileUpload', 'uses'=> 'AdminController@fileUpload']) ;
 });
 
 
