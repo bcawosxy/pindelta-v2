@@ -7,6 +7,7 @@ use Auth;
 use App\Model\About;
 use App\Model\Category;
 use App\Model\Categoryarea;
+use App\Model\Product;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
 
@@ -162,14 +163,14 @@ class AdminController extends Controller
     {
         $user = Auth::user();
         $data = [];
-        $category = Category::where('category.status', '!=', 'delete')
+        $e_category = Category::where('category.status', '!=', 'delete')
                 ->select('category.*', 'categoryarea.name as categoryarea_name')
                 ->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
                 ->orderBy('category.updated_at', 'desc')
                 ->get();
 
-        if($category) {
-            foreach ($category as $k0 => $v0) {
+        if($e_category) {
+            foreach ($e_category as $k0 => $v0) {
                 $data[] = [
                     'id' => $v0->id,
                     'name' => $v0->name,
@@ -335,7 +336,30 @@ class AdminController extends Controller
 
     public function product()
     {
-        return view('admin.product');
+        $user = Auth::user();
+        $data = [];
+        $e_product = Product::where('product.status', '!=', 'delete')
+            ->select('product.*', 'category.name as category_name')
+            ->leftJoin('category', 'product.category_id', '=' , 'category.id')
+            ->orderBy('category.updated_at', 'desc')
+            ->get();
+
+        if($e_product) {
+            foreach ($e_product as $k0 => $v0) {
+                $data[] = [
+                    'id' => $v0->id,
+                    'name' => $v0->name,
+                    'category_id' => $v0->category_id,
+                    'category_name' => $v0->category_name,
+                    'priority' => $v0->priority,
+                    'description' => $v0->description,
+                    'status' => $v0->status,
+                ];
+            }
+        }
+//        print_r($data);
+//        exit;
+        return view('admin.product', ['data' => $data]);
     }
 
     public function product_edit()

@@ -42,8 +42,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //產品
     Route::get('/product', ['as'=> 'product', 'uses'=> 'AdminController@product']) ;
-    //產品管理
-    Route::get('/product/edit', ['as'=> 'product_edit', 'uses'=> 'AdminController@product_edit']) ;
+    Route::get('/product/content/{id?}', ['as'=> 'product_content', 'uses'=> 'AdminController@product_content']) ;
 
     //社群網站連結
     Route::get('/sociallink', ['as'=> 'sociallink', 'uses'=> 'AdminController@sociallink']) ;

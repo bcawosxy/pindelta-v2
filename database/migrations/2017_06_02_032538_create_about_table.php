@@ -21,6 +21,8 @@ class CreateAboutTable extends Migration
             $table->integer('modify_id');
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE `about` CHANGE COLUMN `status` ENUM('open', 'close', 'lock', 'delete')");
     }
 
     /**

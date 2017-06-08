@@ -23,6 +23,7 @@ class CreateCategoryareaTable extends Migration
             $table->enum('status', ['open', 'close', 'delete']);
             $table->timestamps();
         });
+        DB::statement("ALTER TABLE `categoryarea` CHANGE COLUMN `status` ENUM('open', 'close', 'lock', 'delete')");
     }
 
     /**
