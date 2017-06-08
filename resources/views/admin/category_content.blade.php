@@ -14,16 +14,18 @@
 
 @section('content')
 <div class="content-wrapper" style="height: auto;">
+
     <section class="content-header">
-        <div class="box-body"><h2>產品類別管理</h2></div>
+        <div class="box-body"><h2>產品項目管理</h2></div>
         <h1>
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url()->route('admin::index')  }}"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">產品類別管理</li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">產品項目管理</li>
         </ol>
     </section>
+
     <section class="content">
         <div class="box">
             <div class="box-body">
@@ -32,9 +34,7 @@
                         <div class="box-body box-solid">
                             <div class="box-header with-border">
                                 <i class="fa fa-file-text-o"></i>
-                                <h3 class="box-title">
-                                    <?php echo ($data['act'] == 'add') ? '新增產品類別' : '編輯產品類別： '.$data['categoryarea']['name'] ; ?>
-                                </h3>
+                                <h3 class="box-title"> <?php echo ($data['act'] == 'add') ? '新增產品項目' : '編輯產品項目： '.$data['category']['name'] ; ?> </h3>
                             </div>
                             <div class="box-body">
                                 <dl class="dl-horizontal">
@@ -43,23 +43,40 @@
                                     <br>
                                     <dt>名稱:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" style="width:30%" value="{{  $data['categoryarea']['name'] or null }}">
+                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" style="width:30%" value="{{$data['category']['name']}}">
+                                    </dd>
+                                    <br>
+                                    <dt>所屬類別:</dt>
+                                    <dd style="<?php echo ($data['act'] == 'edit') ? 'display:none;' : null; ?>">
+                                        <select class="form-control select2" id="categoryarea" style="width: 30%;">
+                                            <option value="0" selected="selected">請選擇所屬類別</option>
+                                            <?php
+                                                if($data['act'] == 'add') {
+                                                    foreach ($data['categoryarea'] as $k0 => $v0) {
+                                                        echo '<option value="'.$v0['id'].'">'.$v0['name'].'</option>';
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </dd>
+                                    <dd style="<?php echo ($data['act'] == 'add') ? 'display:none;' : null; ?>">
+                                        <p style="color:#00b7b0;font-weight: bold;font-size:14px;">{{$data['category']['categoryarea_name']}}</p>
                                     </dd>
                                     <br>
                                     <dt>排序:</dt>
                                     <dd>
-                                        <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php echo $data['categoryarea']['priority']; ?>">
+                                        <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php echo $data['category']['priority'] ?>">
                                     </dd>
                                     <br>
                                     <dt>狀態:</dt>
                                     <dd>
                                         <div class="form-group">
                                             <label for="r1">
-                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['categoryarea']['status'] == 'open' || $data['categoryarea']['status'] == '') echo 'checked'; ?>>
+                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['category']['status'] == 'open') echo 'checked'; ?>>
                                                 Open
                                             </label>&nbsp;&nbsp;&nbsp;
                                             <label for="r2">
-                                                <input id="r2" type="radio" name="status" class="minimal-red" value="close" <?php if($data['categoryarea']['status'] == 'close') echo 'checked'; ?>>
+                                                <input id="r2" type="radio" name="status" class="minimal-red" value="close" <?php if($data['category']['status'] == 'close') echo 'checked'; ?>>
                                                 Close
                                             </label>
                                         </div>
@@ -67,7 +84,7 @@
                                     <br>
                                     <dt>介紹:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['categoryarea']['description'] or null }}">
+                                        <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['category']['description']}}">
                                     </dd>
                                     <br>
                                     <dt>封面:</dt>
@@ -89,23 +106,23 @@
                                             <!-- The container for the uploaded files -->
                                             <div id="files" class="files"></div>
                                             <br>
-                                            <img style="width:240px;height: 320px;" id="cover" alt="{{$data['categoryarea']['coverName']}}" src="{{$data['categoryarea']['coverUrl']}}" onerror="this.src='{{asset('images/origin.png')}}'" data-state="old" class="img-responsive">
+                                            <img style="width:240px;height: 320px;" id="cover" alt="{{$data['category']['coverName']}}" src="{{$data['category']['coverUrl']}}" onerror="this.src='{{asset('images/origin.png')}}'" data-state="old" class="img-responsive">
                                         </div>
                                     </dd>
                                     <br>
                                     <dt>新增時間:</dt>
                                     <dd>
-                                        <p class="text-muted">{{ $data['categoryarea']['created_at'] or null  }}</p>
+                                        <p class="text-muted">{{ $data['category']['created_at'] or null  }}</p>
                                     </dd>
                                     <br>
                                     <dt>修改時間:</dt>
                                     <dd>
-                                        <p class="text-muted">{{ $data['categoryarea']['updated_at'] or null }}</p>
+                                        <p class="text-muted">{{ $data['category']['updated_at'] or null }}</p>
                                     </dd>
                                     <br>
                                     <dt>修改人員:</dt>
                                     <dd>
-                                        <p class="text-light-blue">{{$data['categoryarea']['admin_name']}}</p>
+                                        <p class="text-light-blue">{{$data['category']['admin_name']}}</p>
                                     </dd>
                                     <br>
                                 </dl>
@@ -115,10 +132,9 @@
                 </div>
             </div>
         </div>
-        <a class="btn btn-app" href="{{url()->route('admin::categoryarea')}}">
+        <a class="btn btn-app" href="{{url()->route('admin::category')}}">
             <i class="fa fa-angle-double-left"></i> 上一頁
         </a>
-
         <a class="btn btn-app" id="save">
             <i class="fa fa-save"></i> 儲存(Save)
         </a>
@@ -127,6 +143,7 @@
             <a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>
         @endif
     </section>
+
 </div>
 @endsection()
 
@@ -134,7 +151,7 @@
 
 <script type="text/javascript">
     $(function () {
-        'use strict';
+        $(".select2").select2();
         $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
             checkboxClass: 'icheckbox_minimal-red',
             radioClass: 'iradio_minimal-red'
@@ -165,10 +182,11 @@
 
         $('#save').on('click', function() {
             var priority = $('input[name=priority]').val(),
-                [id, act, name, priority, status, description, cover, cover_state] = [
-                    '{{ $data['categoryarea']['id'] }}',
+                [id, act, name, categoryarea_id, priority, status, description, cover, cover_state] = [
+                    '{{ $data['category']['id'] }}',
                     '{{ $data['act'] }}',
                     $('input[name="name"]').val(),
+                    $('#categoryarea').val(),
                     priority,
                     $('input[name="status"]:checked').val(),
                     $('input[name="description"]').val(),
@@ -182,12 +200,13 @@
                 _swal({'status': 0, 'message': '資料未填寫完成, 請重新操作'});
             } else {
                 $.ajax({
-                    url : '{{  url("admin/categoryarea/edit") }}',
+                    url : '{{url("admin/category/edit")}}',
                     type: 'post',
                     data: {
                         id : id,
                         act : act,
                         name : name,
+                        categoryarea_id : categoryarea_id,
                         priority : priority,
                         status : status,
                         description : description,
@@ -207,7 +226,7 @@
                     },
                 });
             }
-        });
+        })
     });
 </script>
 @endsection

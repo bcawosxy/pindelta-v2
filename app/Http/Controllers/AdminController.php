@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Auth;
 use App\Model\About;
+use App\Model\Category;
 use App\Model\Categoryarea;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
@@ -67,11 +68,7 @@ class AdminController extends Controller
                     'name' => $v0->name,
                     'priority' => $v0->priority,
                     'description' => $v0->description,
-                    'cover' => $v0->cover,
-                    'modify_name' => $v0->modify_name,
                     'status' => $v0->status,
-                    'created_at' => $v0->created_at,
-                    'updated_at' => $v0->updated_at->toDateTimeString(),
                 ];
             }
         }
@@ -120,14 +117,14 @@ class AdminController extends Controller
         //要取得的 POST Key
         $postParams = ['id', 'act', 'name', 'priority', 'status', 'description', 'cover', 'cover_state'];
         foreach ($postParams as $v0) { $$v0 = $request->$v0; }
-        if($name == '' || $act == '' || $priority == '' || $status == '' || $description == '' || $cover == '' ) return $mF->json_encode_return(0, '資料未填寫完成, 請重新操作');
+        if($name == '' || $act == '' || $priority == '' || $status == '' || $description == '' || $cover == '' ) return json_encode_return(0, '資料未填寫完成, 請重新操作');
 
         //若是新上傳的圖要進行搬移
         if($cover_state == 'new') {
             $coverUploadPath = public_path("upload/files/$cover");
             $coverStoragePath  = storage_path("app/public/images/categoryarea/$cover");
             $r_renameCover = rename($coverUploadPath, $coverStoragePath);
-            if(!$r_renameCover) return  $mF->json_encode_return(0, '圖片處理失敗, 請重新操作', url()->route('admin::categoryarea_content', ['id' => $id]));
+            if(!$r_renameCover) return  json_encode_return(0, '圖片處理失敗, 請重新操作', url()->route('admin::categoryarea_content', ['id' => $id]));
         }
 
         $params = [
@@ -163,12 +160,137 @@ class AdminController extends Controller
 
     public function category()
     {
-        return view('admin.category');
+        $user = Auth::user();
+        $data = [];
+        $category = Category::where('category.status', '!=', 'delete')
+                ->select('category.*', 'categoryarea.name as categoryarea_name')
+                ->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
+                ->orderBy('category.updated_at', 'desc')
+                ->get();
+
+        if($category) {
+            foreach ($category as $k0 => $v0) {
+                $data[] = [
+                    'id' => $v0->id,
+                    'name' => $v0->name,
+                    'categoryarea_id' => $v0->categoryarea_id,
+                    'categoryarea_name' => $v0->categoryarea_name,
+                    'priority' => $v0->priority,
+                    'description' => $v0->description,
+                    'cover' => $v0->cover,
+                    'modify_name' => $v0->modify_name,
+                    'status' => $v0->status,
+                ];
+            }
+        }
+
+        return view('admin.category', ['data' => $data]);
     }
 
-    public function category_edit()
+    public function category_content($id = null)
     {
-        return view('admin.category_edit');
+        $act = (is_null($id)) ? 'add' : 'edit';
+        $a_category = $a_categoryarea =null;
+        switch ($act) {
+            case 'add' :
+                $e_categoryarea = Categoryarea::where('status', 'open')->get();
+                if($e_categoryarea) {
+                    foreach ($e_categoryarea as $k0 => $v0) {
+                        $a_categoryarea[] = [
+                            'id' => $v0->id,
+                            'name' => $v0->name,
+                        ];
+                    }
+                }
+                break;
+
+            case 'edit' :
+                $e_category = Category::
+                        select('category.*', 'admin.name as admin_name', 'categoryarea.id as categoryarea_id', 'categoryarea.name as categoryarea_name')
+                        ->where('category.id', $id)
+                        ->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
+                        ->leftJoin('admin', 'category.modify_id', '=', 'admin.id')
+                        ->get();
+
+                foreach ($e_category as $k0 => $v0) {
+                    $a_category = [
+                        'id' => $v0->id,
+                        'name' => $v0->name,
+                        'categoryarea_id' => $v0->categoryarea_id,
+                        'categoryarea_name' => $v0->categoryarea_name,
+                        'priority' => (int)$v0->priority,
+                        'description' => $v0->description,
+                        'coverUrl' => asset("storage/images/category/$v0->cover"),
+                        'coverName' => $v0->cover,
+                        'modify_id' => $v0->modify_id,
+                        'status' => $v0->status,
+                        'created_at' => $v0->created_at,
+                        'updated_at' => $v0->updated_at,
+                        'admin_name' => $v0->admin_name,
+                    ];
+                }
+                break;
+
+            default :
+                // handle some error here...
+                break;
+        }
+
+        $data = [
+            'act' => $act,
+            'category' => $a_category,
+            'categoryarea' => $a_categoryarea,
+        ];
+        return view('admin.category_content', ['data' => $data]);
+    }
+
+    public function categoryEdit (Request $request)
+    {
+        $user = Auth::user();
+        //要取得的 POST Key
+        $postParams = ['id', 'act', 'name', 'categoryarea_id', 'priority', 'status', 'description', 'cover', 'cover_state'];
+        foreach ($postParams as $v0) { $$v0 = $request->$v0; }
+        if($name == '' || $act == '' || $priority == '' || $status == '' || $description == '' || $cover == '' ) return json_encode_return(0, '資料未填寫完成, 請重新操作');
+        if($act == 'add' && !$categoryarea_id) return json_encode_return(0, '資料未填寫完成, 請重新操作[categoryarea_id]');
+
+        //若是新上傳的圖要進行搬移
+        if($cover_state == 'new') {
+            $coverUploadPath = public_path("upload/files/$cover");
+            $coverStoragePath  = storage_path("app/public/images/category/$cover");
+            $r_renameCover = rename($coverUploadPath, $coverStoragePath);
+            if(!$r_renameCover) return  json_encode_return(0, '圖片處理失敗, 請重新操作', url()->route('admin::category_content', ['id' => $id]));
+        }
+
+        $params = [
+            'name'  => $name,
+            'priority' => $priority,
+            'status' => $status,
+            'description' => $description,
+            'cover' => $cover,
+            'modify_id' => $user->id,
+        ];
+
+        $result = 0;
+        $message = '錯誤, 請重新操作';
+        $redirect = null;
+
+        if($act == 'add') {
+            $params['created_at'] = $params['updated_at'] = inserttime();
+            $params['categoryarea_id'] = $categoryarea_id ;
+            if(DB::table('category')->insert($params)) {
+                $result = 1;
+                $message = '新增資料完成';
+                $redirect = url()->route('admin::category');
+            }
+        } else {
+            if (Category::where('id', $id)->update($params)) {
+                $result = 1;
+                $message = '修改資料完成';
+                $redirect = url()->route('admin::category_content', ['id' => $id]);
+            }
+        }
+
+        return json_encode_return($result, $message, $redirect );
     }
 
     public function contact()

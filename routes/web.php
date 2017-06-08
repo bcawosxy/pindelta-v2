@@ -20,6 +20,8 @@ Route::post('login', ['uses' => 'PindeltaController@login']);
 
 //Admin Route Group
 Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
+    //
+    Route::get('/test', ['as' => 'test', 'uses'=> 'AdminController@test']) ;
 
     // index , 圖表
     Route::get('/', ['as' => 'index', 'uses'=> 'AdminController@index']) ;
@@ -35,8 +37,8 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //產品項目
     Route::get('/category', ['as'=> 'category', 'uses'=> 'AdminController@category']) ;
-    //產品項目管理
-    Route::get('/category/edit', ['as'=> 'category_edit', 'uses'=> 'AdminController@category_edit']) ;
+    Route::get('/category/content/{id?}', ['as'=> 'category_content', 'uses'=> 'AdminController@category_content']) ;
+    Route::post('/category/edit/', ['uses'=> 'AdminController@categoryEdit']) ;
 
     //產品
     Route::get('/product', ['as'=> 'product', 'uses'=> 'AdminController@product']) ;
