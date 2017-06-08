@@ -357,14 +357,72 @@ class AdminController extends Controller
                 ];
             }
         }
-//        print_r($data);
-//        exit;
         return view('admin.product', ['data' => $data]);
     }
 
-    public function product_edit()
+    public function product_content($id = null)
     {
-        return view('admin.product_edit');
+        $act = (is_null($id)) ? 'add' : 'edit';
+        $a_product = $a_category = null;
+        switch ($act) {
+            case 'add' :
+                $e_categoryarea = Categoryarea::where('status', 'open')->get();
+                if($e_categoryarea) {
+                    foreach ($e_categoryarea as $k0 => $v0) {
+                        $a_categoryarea[] = [
+                            'id' => $v0->id,
+                            'name' => $v0->name,
+                        ];
+                    }
+                }
+                break;
+
+            case 'edit' :
+                $e_product = Product::
+                select('product.*', 'admin.name as admin_name', 'category.id as category_id', 'category.name as category_name')
+                    ->where('product.id', $id)
+                    ->leftJoin('category', 'product.category_id', '=' , 'category.id')
+                    ->leftJoin('admin', 'product.modify_id', '=', 'admin.id')
+                    ->get();
+
+                foreach ($e_product as $k0 => $v0) {
+                    $a_product = [
+                        'id' => $v0->id,
+                        'name' => $v0->name,
+                        'category_id' => $v0->category_id,
+                        'category_name' => $v0->category_name,
+                        'priority' => (int)$v0->priority,
+                        'description' => $v0->description,
+                        'content' => $v0->content,
+                        'model' => $v0->model,
+                        'standard' => $v0->standard,
+                        'material' => $v0->material,
+                        'produce_time' => $v0->produce_time,
+                        'lowest' => $v0->lowest,
+                        'memo' => $v0->memo,
+                        'tags' => $v0->tags,
+                        'coverUrl' => asset("storage/images/product/$v0->cover"),
+                        'coverName' => $v0->cover,
+                        'modify_id' => $v0->modify_id,
+                        'status' => $v0->status,
+                        'created_at' => $v0->created_at,
+                        'updated_at' => $v0->updated_at,
+                        'admin_name' => $v0->admin_name,
+                    ];
+                }
+                break;
+
+            default :
+                // handle some error here...
+                break;
+        }
+
+        $data = [
+            'act' => $act,
+            'product' => $a_product,
+        ];
+
+        return view('admin.product_content', ['data' => $data]);
     }
 
     public function sociallink()

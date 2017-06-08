@@ -21,7 +21,7 @@
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{ url()->route('admin::index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">產品管理</li>
         </ol>
     </section>
@@ -43,20 +43,20 @@
                                         <!--tab1-->
                                         <div class="box-header with-border">
                                             <i class="fa fa-file-text-o"></i>
-                                            <h3 class="box-title"> <?php// echo ($act == 'add') ? '新增產品' : '編輯產品 ： <span style="color:#3c8dbc;font-weight:bold">'.$data['product_name'] ?></span> </h3>
+                                            <h3 class="box-title"> <?php echo ($data['act'] == 'add') ? '新增產品' : '編輯產品 ： <span style="color:#3c8dbc;font-weight:bold">'.$data['product']['name'] ?></span> </h3>
                                         </div>
                                         <div class="box-body">
                                             <dl class="dl-horizontal">
                                                 <dt>編號:</dt>
-                                                <dd># <?php// echo $data['product_id'] ?></dd>
+                                                <dd># {{$data['product']['id']}}</dd>
                                                 <br>
                                                 <dt>名稱:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="name" placeholder="產品名稱" style="width:30%" value="<?php// echo $data['product_name'] ?>">
+                                                    <input type="text" class="form-control" name="name" placeholder="產品名稱" style="width:30%" value="{{$data['product']['name']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>所屬項目:</dt>
-                                                <dd style="<?php //echo ($act == 'edit') ? 'display:none;' : null; ?>">
+                                                <dd style="<?php echo ($data['act'] == 'edit') ? 'display:none;' : null; ?>">
                                                     <select class="form-control select2" id="category_id" style="width: 30%;">
                                                         <option value="0" selected="selected">請選擇所屬項目</option>
                                                         <?php
@@ -66,49 +66,49 @@
                                                         ?>
                                                     </select>
                                                 </dd>
-                                                <dd style="<?php// echo ($act == 'add') ? 'display:none;' : null; ?>">
-                                                    <p style="color:#00b7b0;font-weight: bold;font-size:14px;"><?php// echo $category_name ?></p>
+                                                <dd style="<?php echo ($data['act'] == 'add') ? 'display:none;' : null; ?>">
+                                                    <p style="color:#00b7b0;font-weight: bold;font-size:14px;"><?php echo $data['product']['category_name'] ?></p>
                                                 </dd>
                                                 <br>
                                                 <dt>排序:</dt>
                                                 <dd>
-                                                    <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php// echo $data['product_priority'] ?>">
+                                                    <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php echo $data['product']['priority'] ?>">
                                                 </dd>
                                                 <br>
                                                 <dt>型號:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="model" placeholder="產品型號" style="width:30%" value="<?php// echo $data['product_model'] ?>">
+                                                    <input type="text" class="form-control" name="model" placeholder="產品型號" style="width:30%" value="{{$data['product']['model']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>規格:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="standard" placeholder="產品規格" style="width:30%" value="<?php//echo $data['product_standard'] ?>">
+                                                    <input type="text" class="form-control" name="standard" placeholder="產品規格" style="width:30%" value="{{$data['product']['standard']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>材質:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="material" placeholder="產品材質" style="width:30%" value="<?php// echo $data['product_material'] ?>">
+                                                    <input type="text" class="form-control" name="material" placeholder="產品材質" style="width:30%" value="{{$data['product']['material']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>生產所需時間:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="produce_time" placeholder="產品生產時間" style="width:30%" value="<?php //echo $data['product_produce_time'] ?>">
+                                                    <input type="text" class="form-control" name="produce_time" placeholder="產品生產時間" style="width:30%" value="{{$data['product']['produce_time']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>最低訂購量:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="lowest" placeholder="最低訂購量" style="width:30%" value="<?php //echo $data['product_lowest'] ?>">
+                                                    <input type="text" class="form-control" name="lowest" placeholder="最低訂購量" style="width:30%" value="{{$data['product']['lowest']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>狀態:</dt>
                                                 <dd>
                                                     <div class="form-group">
                                                         <label for="r1">
-                                                            <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php// if($data['product_status'] == 'open') echo 'checked'; ?>>
+                                                            <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['product']['status'] == 'open' || $data['categoryarea']['status'] == '') echo 'checked'; ?>>
                                                             Open
                                                         </label>&nbsp;&nbsp;&nbsp;
                                                         <label for="r2">
-                                                            <input id="r2" type="radio" name="status" class="minimal-red" value="close" <?php //if($data['product_status'] == 'close') echo 'checked'; ?>>
+                                                            <input id="r2" type="radio" name="status" class="minimal-red" value="close" <?php if($data['product']['status'] == 'close') echo 'checked'; ?>>
                                                             Close
                                                         </label>
                                                     </div>
@@ -116,17 +116,17 @@
                                                 <br>
                                                 <dt>介紹:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="<?php// echo $data['product_description'] ?>">
+                                                    <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['product']['description']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>備註:</dt>
                                                 <dd>
-                                                    <textarea class="form-control" name="memo" rows="3" placeholder="Enter ..."><?php// echo $data['product_memo'] ?></textarea>
+                                                    <textarea class="form-control" name="memo" rows="3" placeholder="Enter ...">{{$data['product']['memo']}}</textarea>
                                                 </dd>
                                                 <br>
                                                 <dt>內文:</dt>
                                                 <dd>
-                                                    <textarea rows="10" cols="30" name="product_content" class="ckeditor" id="product_content"><?php //echo $data['product_content']; ?></textarea>
+                                                    <textarea rows="10" cols="30" name="product_content" class="ckeditor" id="product_content">{{$data['product']['content']}}</textarea>
                                                     <script type="text/javascript">CKEDITOR.replace('product_content',
                                                             {
                                                                 toolbar : 'Full',
@@ -154,18 +154,23 @@
                                                         <!-- The container for the uploaded files -->
                                                         <div id="files" class="files"></div>
                                                         <br>
-                                                        <img style="width:240px;height: 320px;" id="cover" alt="<?php// echo $cover ?>" src="<?php //echo $cover_dir ?>" data-state="old" class="img-responsive">
+                                                        <img style="width:240px;height: 320px;" id="cover" alt="{{$data['product']['coverName']}}" src="{{$data['product']['coverUrl']}}"    onerror="this.src='{{asset('images/origin.png')}}'" data-state="old" class="img-responsive">
                                                     </div>
                                                 </dd>
                                                 <br>
                                                 <dt>新增時間:</dt>
                                                 <dd>
-                                                    <p class="text-muted"><?php //echo $data['product_inserttime'] ?></p>
+                                                    <p class="text-muted">{{ $data['product']['created_at'] or null  }}</p>
                                                 </dd>
                                                 <br>
                                                 <dt>修改時間:</dt>
                                                 <dd>
-                                                    <p class="text-muted"><?php //echo $data['product_modify_time'] ?></p>
+                                                    <p class="text-muted">{{ $data['product']['updated_at'] or null }}</p>
+                                                </dd>
+                                                <br>
+                                                <dt>修改人員:</dt>
+                                                <dd>
+                                                    <p class="text-light-blue">{{$data['product']['admin_name']}}</p>
                                                 </dd>
                                                 <br>
                                             </dl>

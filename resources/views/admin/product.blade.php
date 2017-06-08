@@ -73,8 +73,6 @@
 @endsection()
 
 @section('foot')
-
-
 <script type="text/javascript">
     $(function () {
         $("#example1").DataTable({

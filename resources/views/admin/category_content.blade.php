@@ -21,7 +21,7 @@
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{ url()->route('admin::index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">產品項目管理</li>
         </ol>
     </section>
@@ -72,7 +72,7 @@
                                     <dd>
                                         <div class="form-group">
                                             <label for="r1">
-                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['category']['status'] == 'open') echo 'checked'; ?>>
+                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['category']['status'] == 'open'|| $data['categoryarea']['status'] == '') echo 'checked'; ?>>
                                                 Open
                                             </label>&nbsp;&nbsp;&nbsp;
                                             <label for="r2">
