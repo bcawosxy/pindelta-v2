@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
-use App\About;
-use App\Categoryarea;
-use App\Library\MyFunction;
+use App\Model\About;
+use App\Model\Categoryarea;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
 
@@ -36,7 +35,7 @@ class AdminController extends Controller
         return view('admin.about', ['data' => $data]);
     }
 
-    public function aboutEdit(Request $request, MyFunction $mF) {
+    public function aboutEdit(Request $request) {
         $user = Auth::user();
 
         if(About::where('category', 'about_c')->update(['value'=>$request->value, 'modify_id'=>$user->id])) {
@@ -48,7 +47,7 @@ class AdminController extends Controller
         }
         $redirect =  url()->route('admin::about');
 
-        return $mF->json_encode_return($result, $message, $redirect );
+        return json_encode_return($result, $message, $redirect );
     }
 
     public function admins()
@@ -115,7 +114,7 @@ class AdminController extends Controller
         return view('admin.categoryarea_content', ['data' => $data]);
     }
 
-    public function categoryareaEdit(Request $request, MyFunction $mF)
+    public function categoryareaEdit(Request $request)
     {
         $user = Auth::user();
         //要取得的 POST Key
@@ -145,7 +144,7 @@ class AdminController extends Controller
         $redirect = null;
 
         if($act == 'add') {
-            $params['created_at'] = $params['updated_at'] = $mF->inserttime();
+            $params['created_at'] = $params['updated_at'] = inserttime();
             if(DB::table('categoryarea')->insert($params)) {
                 $result = 1;
                 $message = '新增資料完成';
@@ -159,7 +158,7 @@ class AdminController extends Controller
             }
         }
 
-        return $mF->json_encode_return($result, $message, $redirect );
+        return json_encode_return($result, $message, $redirect );
     }
 
     public function category()
@@ -182,7 +181,7 @@ class AdminController extends Controller
         return view('admin.contact_edit');
     }
 
-    public function fileUpload(Request $request)
+    public function fileUpload()
     {
         $options = array(
             // This option will disable creating thumbnail images and will not create that extra folder.

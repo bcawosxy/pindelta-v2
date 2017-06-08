@@ -1,19 +1,19 @@
 <?php
-namespace App\Library;
-
-class MyFunction
-{
+if (! function_exists('inserttime')) {
     /**
      * 回傳制式時間格式
      * <p>v1.0 2017-06-07</p>
      * @param string $second
      * @return string
      */
-    function inserttime($second=null) {
+    function inserttime($second = null)
+    {
         return date('Y-m-d H:i:s', time() + (int)$second);
     }
+}
 
-    /**
+if (! function_exists('json_encode_return')) {
+    /**-
      * Ajax呼叫時制式的回傳 return json
      * <p>v1.0 2017-06-07</p>
      * @param number $result
@@ -22,7 +22,7 @@ class MyFunction
      * @param string /array $data
      * @return response;
      */
-    public function json_encode_return($result, $message = null, $redirect = null, $data = null)
+    function json_encode_return($result, $message = null, $redirect = null, $data = null)
     {
         $return = [];
         $return['status'] = $result;
@@ -40,5 +40,4 @@ class MyFunction
 
         return response(json_encode($return), $HttpStatus)->header('Content-Type', 'application/json');
     }
-
 }
