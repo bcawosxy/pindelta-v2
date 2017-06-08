@@ -33,11 +33,7 @@
                             <div class="box-header with-border">
                                 <i class="fa fa-file-text-o"></i>
                                 <h3 class="box-title">
-                                    @if ($data['act'] == 'add')
-                                        '新增產品類別'
-                                    @else
-                                        編輯產品類別：{{$data['categoryarea']['name']}}
-                                    @endif
+                                    <?php echo ($data['act'] == 'add') ? '新增產品類別' : '編輯產品類別： '.$data['categoryarea']['name'] ; ?>
                                 </h3>
                             </div>
                             <div class="box-body">
@@ -59,7 +55,7 @@
                                     <dd>
                                         <div class="form-group">
                                             <label for="r1">
-                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['categoryarea']['status'] == 'open') echo 'checked'; ?>>
+                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['categoryarea']['status'] == 'open' || $data['categoryarea']['status'] == '') echo 'checked'; ?>>
                                                 Open
                                             </label>&nbsp;&nbsp;&nbsp;
                                             <label for="r2">
@@ -93,7 +89,7 @@
                                             <!-- The container for the uploaded files -->
                                             <div id="files" class="files"></div>
                                             <br>
-                                            <img style="width:240px;height: 320px;" id="cover" alt="<?php// echo $cover ?>" src="#" onerror="this.src='<?php //echo URL_IMG_ROOT.'default_bg.png' ?>'" data-state="old" class="img-responsive">
+                                            <img style="width:240px;height: 320px;" id="cover" alt="{{$data['categoryarea']['coverName']}}" src="{{$data['categoryarea']['coverUrl']}}" onerror="this.src='{{asset('images/origin.png')}}'" data-state="old" class="img-responsive">
                                         </div>
                                     </dd>
                                     <br>
@@ -152,8 +148,13 @@
             },
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
-                    var target = '<?php echo URL('upload/files'); ?>/';
-                    $('#cover').attr({'alt': file.name , 'src': target + file.name }).data('state', 'new');
+                    if( file.error ) {
+                        _swal({'status': 0, 'message': file.error});
+                        $('#progress .progress-bar').css('width', '0%');
+                    } else {
+                        var target = '<?php echo URL('upload/files'); ?>/';
+                        $('#cover').attr({'alt': file.name, 'src': target + file.name}).data('state', 'new');
+                    }
                 });
             },
             progressall: function (e, data) {
@@ -162,37 +163,43 @@
             }
         }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-            checkboxClass: 'icheckbox_minimal-red',
-            radioClass: 'iradio_minimal-red'
-        });
+        $('#save').on('click', function() {
+            var priority = $('input[name=priority]').val(),
+                [id, act, name, priority, status, description, cover, cover_state] = [
+                    '{{ $data['categoryarea']['id'] }}',
+                    '{{ $data['act'] }}',
+                    $('input[name="name"]').val(),
+                    priority,
+                    $('input[name="status"]:checked').val(),
+                    $('input[name="description"]').val(),
+                    $('#cover').attr('alt'),
+                    $('#cover').data('state')
+                ];
 
-        $('#save').on('click', function(){
-            var priority = $('input[name=priority]');
-
-            if (!/^\d+$/.test(priority.val())) {
-                var r = {'status': 0, 'message': '排序須輸入正整數。'};
-                _swal(r);
+            if (!/^\d+$/.test(priority)) {
+                _swal({'status': 0, 'message': '排序須輸入正整數'});
+            } else if(act == '' || name == '' || priority == '' || status == '' || description == '' || cover == '') {
+                _swal({'status': 0, 'message': '資料未填寫完成, 請重新操作'});
             } else {
                 $.ajax({
                     url : '{{  url("admin/categoryarea/edit") }}',
                     type: 'post',
                     data: {
-                        id : "{{ $data['categoryarea']['id'] }}",
-                        act : "{{ $data['act'] }}",
-                        name : $('input[name="name"]').val(),
-                        priority : priority.val(),
-                        status : $('input[name="status"]:checked').val(),
-                        description : $('input[name="description"]').val(),
-                        cover : $('#cover').attr('alt'),
-                        cover_state : $('#cover').data('state'),
+                        id : id,
+                        act : act,
+                        name : name,
+                        priority : priority,
+                        status : status,
+                        description : description,
+                        cover : cover,
+                        cover_state : cover_state,
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     dataType: 'json',
                     success: function (r) {
-//                        _swal(r);
+                        _swal(r);
                     },
                     error: function (r) {
                         r = r.responseJSON;

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Library\UploadHandler;
+use DB;
 use Auth;
 use App\About;
 use App\Categoryarea;
+use App\Library\MyFunction;
 use Illuminate\Http\Request;
+use App\Library\UploadHandler;
 
 class AdminController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('adminlogin', ['except' => ['logout']]);
@@ -35,19 +36,19 @@ class AdminController extends Controller
         return view('admin.about', ['data' => $data]);
     }
 
-    public function aboutEdit(Request $request) {
+    public function aboutEdit(Request $request, MyFunction $mF) {
         $user = Auth::user();
-        $result = About::where('category', 'about_c')->update(['value'=>$request->value, 'modify_id'=>$user->id]);
 
-        if($result) {
-            $status = 200;
-            $content = ['message' => '修改完成', 'redirect' => url()->route('admin::about')];
+        if(About::where('category', 'about_c')->update(['value'=>$request->value, 'modify_id'=>$user->id])) {
+            $result = 1;
+            $message = '修改完成';
         } else {
-            $status = 401;
-            $content = ['status'=> 0,  'message' => '修改失敗，請重新操作。', 'redirect' => url()->route('admin::about')];
+            $result = 0;
+            $message = '修改失敗, 請重新操作';
         }
+        $redirect =  url()->route('admin::about');
 
-        return response($content, $status)->header('Content-Type', 'application/json');
+        return $mF->json_encode_return($result, $message, $redirect );
     }
 
     public function admins()
@@ -96,7 +97,8 @@ class AdminController extends Controller
                     'name' => $v0->name,
                     'priority' => (int)$v0->priority,
                     'description' => $v0->description,
-                    'cover' => $v0->cover,
+                    'coverUrl' => asset("storage/images/categoryarea/$v0->cover"),
+                    'coverName' => $v0->cover,
                     'modify_id' => $v0->modify_id,
                     'status' => $v0->status,
                     'created_at' => $v0->created_at,
@@ -113,40 +115,51 @@ class AdminController extends Controller
         return view('admin.categoryarea_content', ['data' => $data]);
     }
 
-    public function categoryareaEdit(Request $request)
+    public function categoryareaEdit(Request $request, MyFunction $mF)
     {
         $user = Auth::user();
-        $id = $request->id;
-        $act = $request->act;
-        $name = $request->name;
-        $priority = $request->priority;
-        $status = $request->status;
-        $description = $request->description;
+        //要取得的 POST Key
+        $postParams = ['id', 'act', 'name', 'priority', 'status', 'description', 'cover', 'cover_state'];
+        foreach ($postParams as $v0) { $$v0 = $request->$v0; }
+        if($name == '' || $act == '' || $priority == '' || $status == '' || $description == '' || $cover == '' ) return $mF->json_encode_return(0, '資料未填寫完成, 請重新操作');
 
-        $edit = [
+        //若是新上傳的圖要進行搬移
+        if($cover_state == 'new') {
+            $coverUploadPath = public_path("upload/files/$cover");
+            $coverStoragePath  = storage_path("app/public/images/categoryarea/$cover");
+            $r_renameCover = rename($coverUploadPath, $coverStoragePath);
+            if(!$r_renameCover) return  $mF->json_encode_return(0, '圖片處理失敗, 請重新操作', url()->route('admin::categoryarea_content', ['id' => $id]));
+        }
+
+        $params = [
             'name'  => $name,
             'priority' => $priority,
             'status' => $status,
             'description' => $description,
+            'cover' => $cover,
             'modify_id' => $user->id,
         ];
 
+        $result = 0;
+        $message = '錯誤, 請重新操作';
+        $redirect = null;
+
         if($act == 'add') {
-
+            $params['created_at'] = $params['updated_at'] = $mF->inserttime();
+            if(DB::table('categoryarea')->insert($params)) {
+                $result = 1;
+                $message = '新增資料完成';
+                $redirect = url()->route('admin::categoryarea');
+            }
         } else {
-            $result = Categoryarea::where('id', $id)->update($edit);
+            if (Categoryarea::where('id', $id)->update($params)) {
+                $result = 1;
+                $message = '修改資料完成';
+                $redirect = url()->route('admin::categoryarea_content', ['id' => $id]);
+            }
         }
 
-        if($result) {
-            $status = 200;
-            $content = ['message' => '修改完成', 'redirect' => url()->route('admin::categoryarea_content', ['id' => $id])];
-        } else {
-            $status = 401;
-            $content = ['status'=> 0, 'message' => '修改失敗，請重新操作。', 'redirect' => url()->route('admin::categoryarea_content', ['id'=>$id])];
-        }
-
-
-        return response($content, $status)->header('Content-Type', 'application/json');
+        return $mF->json_encode_return($result, $message, $redirect );
     }
 
     public function category()
@@ -171,7 +184,12 @@ class AdminController extends Controller
 
     public function fileUpload(Request $request)
     {
-        $upload = new UploadHandler();
+        $options = array(
+            // This option will disable creating thumbnail images and will not create that extra folder.
+            // However, due to this, the images preview will not be displayed after upload
+            'image_versions' => [],
+        );
+        $upload = new UploadHandler($options);
     }
 
     public function index()

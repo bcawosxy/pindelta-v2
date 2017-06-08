@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         /**
-         *  #Mars - 規定進入route且參數名稱為 id 的內容都必須是數字。此處還需取得非數字的例外狀況...
+         *   #Mars - 規定進入route且參數名稱為 id 的內容都必須是數字。此處還需取得並處理非數字的例外狀況...
          */
 
         Route::pattern('id', '[0-9]+');

@@ -20,9 +20,6 @@ Route::post('login', ['uses' => 'PindeltaController@login']);
 
 //Admin Route Group
 Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
-    Route::get('/test', function (){
-        return URL::asset('adminlte/plugins/icheck/minimal/minimal.css');
-    });
 
     // index , 圖表
     Route::get('/', ['as' => 'index', 'uses'=> 'AdminController@index']) ;
@@ -35,7 +32,6 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     Route::get('/categoryarea', ['as'=> 'categoryarea', 'uses'=> 'AdminController@categoryarea']) ;
     Route::get('/categoryarea/content/{id?}', ['as'=> 'categoryarea_content', 'uses'=> 'AdminController@categoryarea_content']);
     Route::post('/categoryarea/edit/', ['uses'=> 'AdminController@categoryareaEdit']) ;
-
 
     //產品項目
     Route::get('/category', ['as'=> 'category', 'uses'=> 'AdminController@category']) ;
