@@ -43,12 +43,12 @@
                                     <br>
                                     <dt>名稱:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" style="width:30%" value="{{  $data['categoryarea']['name'] or null }}">
+                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" value="{{  $data['categoryarea']['name'] or null }}">
                                     </dd>
                                     <br>
                                     <dt>排序:</dt>
                                     <dd>
-                                        <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php echo $data['categoryarea']['priority']; ?>">
+                                        <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" value="<?php echo $data['categoryarea']['priority']; ?>">
                                     </dd>
                                     <br>
                                     <dt>狀態:</dt>
@@ -67,7 +67,7 @@
                                     <br>
                                     <dt>介紹:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['categoryarea']['description'] or null }}">
+                                        <input type="text" class="form-control" name="description" placeholder="介紹" value="{{$data['categoryarea']['description'] or null }}">
                                     </dd>
                                     <br>
                                     <dt>封面:</dt>
@@ -118,11 +118,9 @@
         <a class="btn btn-app" href="{{url()->route('admin::categoryarea')}}">
             <i class="fa fa-angle-double-left"></i> 上一頁
         </a>
-
         <a class="btn btn-app" id="save">
             <i class="fa fa-save"></i> 儲存(Save)
         </a>
-
         @if ($data['act'] == 'edit')
             <a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>
         @endif
@@ -131,7 +129,6 @@
 @endsection()
 
 @section('foot')
-
 <script type="text/javascript">
     $(function () {
         'use strict';

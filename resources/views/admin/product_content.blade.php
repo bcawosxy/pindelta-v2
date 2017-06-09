@@ -13,8 +13,15 @@
 @endsection
 
 @section('content')
-<div class="content-wrapper" style="height: auto;">
+    <style>
+        dd.tags{
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="{{ URL::asset('js/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+    <script src="{{ URL::asset('js/ckeditor/adapters/jquery.js')}}" type="text/javascript"></script>
 
+    <div class="content-wrapper" style="height: auto;">
     <section class="content-header">
         <div class="box-body"><h2>產品管理</h2></div>
         <h1>
@@ -60,9 +67,11 @@
                                                     <select class="form-control select2" id="category_id" style="width: 30%;">
                                                         <option value="0" selected="selected">請選擇所屬項目</option>
                                                         <?php
-//                                                        foreach ($a_category as $k0 => $v0) {
-//                                                            echo '<option value="'.$v0['category_id'].'">'.$v0['category_name'].'</option>';
-//                                                        }
+                                                        if($data['act'] == 'add') {
+                                                            foreach ($data['category'] as $k0 => $v0) {
+                                                                echo '<option value="'.$v0['id'].'">'.$v0['name'].'</option>';
+                                                            }
+                                                        }
                                                         ?>
                                                     </select>
                                                 </dd>
@@ -104,7 +113,7 @@
                                                 <dd>
                                                     <div class="form-group">
                                                         <label for="r1">
-                                                            <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['product']['status'] == 'open' || $data['categoryarea']['status'] == '') echo 'checked'; ?>>
+                                                            <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['product']['status'] == 'open' || $data['product']['status'] == '') echo 'checked'; ?>>
                                                             Open
                                                         </label>&nbsp;&nbsp;&nbsp;
                                                         <label for="r2">
@@ -181,7 +190,7 @@
                                     <div class="tab-pane" id="tab_2">
                                         <!-- tab2-->
                                         <div class="box-header with-border">
-                                            <i class="fa fa-file-text-o"></i><h3 class="box-title">產品標籤 </h3>
+                                            <i class="fa fa-file-text-o"></i><h3 class="box-title">產品標籤</h3>
                                         </div>
                                         <div class="box-body">
                                             <dl class="dl-horizontal tag_list">
@@ -191,22 +200,21 @@
                                                     </div>
                                                 </dd><br>
                                                 <?php
-//                                                if(count($tags) > 0 ) {
-//                                                    foreach ($tags as $k0 => $v0) {
-//                                                        echo '<dd class="tags">
-//																		<div>
-//																			<input class="form-control" type="text" name="tags_name" style="width:20%;float: left" value="'.$v0.'">
-//																			<input class="btn btn-danger delete_tags" type="button" value="刪除"></input>
-//																		</div>
-//																	</dd>';
-//                                                    }
-//                                                }
+                                                if(count($data['product']['tags']) > 0 ) {
+                                                    foreach ($data['product']['tags'] as $k0 => $v0) {
+                                                        echo '<dd class="tags">
+                                                                <div>
+                                                                    <input class="form-control" type="text" name="tags_name" style="width:20%;float: left" value="'.$v0.'">
+                                                                    <input class="btn btn-danger delete_tags" type="button" value="刪除"></input>
+                                                                </div>
+                                                            </dd>';
+                                                    }
+                                                }
                                                 ?>
                                             </dl>
                                         </div>
                                         <!-- end tab2-->
                                     </div>
-
                                     <div class="tab-pane" id="tab_3">
                                         <!-- tab3-->
                                         <div class="box-header with-border">
@@ -228,7 +236,7 @@
                 </div>
             </div>
         </div>
-        <a class="btn btn-app" href="<?php //echo URL_ADMIN2_ROOT.'product' ?>">
+        <a class="btn btn-app" href="{{url()->route('admin::product')}}">
             <i class="fa fa-angle-double-left"></i> 上一頁
         </a>
 
@@ -237,10 +245,18 @@
         </a>
 
         <?php
-        //if($act =='edit') echo '<a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>';
+        if($data['act'] =='edit') echo '<a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>';
         ?>
     </section>
-
+    <!-- For Clone -->
+    <div style="display:none">
+        <dd class="tags">
+            <div>
+                <input class="form-control" type="text" name="tags_name" style="width:20%;float: left">
+                <input class="btn btn-danger delete_tags" type="button" value="刪除"></input>
+            </div>
+        </dd>
+    </div>
 </div>
 @endsection()
 
@@ -251,7 +267,111 @@
 <script type="text/javascript">
     $(function () {
         $("#category_id").select2();
-        // some content code here
+
+        'use strict';
+        $('#fileupload').fileupload({
+            url: "{{ url()->route('admin::fileUpload')  }}",
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    if( file.error ) {
+                        _swal({'status': 0, 'message': file.error});
+                        $('#progress .progress-bar').css('width', '0%');
+                    } else {
+                        var target = '<?php echo URL('upload/files'); ?>/';
+                        $('#cover').attr({'alt': file.name, 'src': target + file.name}).data('state', 'new');
+                    }
+                });
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css('width', progress + '%');
+            }
+
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+            checkboxClass: 'icheckbox_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+
+        $('#add_tags').on('click', function() {
+            $('dd.tags:last').clone().appendTo('dl.tag_list');
+        });
+
+        $('#save').on('click', function() {
+            var priority = $('input[name=priority]').val(), tags = [],
+                [id, act, name, category_id,priority, model, standard, material, produce_time, lowest, memo, content, status, description, cover, cover_state, meta] = [
+                    '{{ $data['product']['id'] }}',
+                    '{{ $data['act'] }}',
+                    $('input[name="name"]').val(),
+                    $('#category_id').val(),
+                    priority,
+                    $('input[name="model"]').val(),
+                    $('input[name="standard"]').val(),
+                    $('input[name="material"]').val(),
+                    $('input[name="produce_time"]').val(),
+                    $('input[name="lowest"]').val(),
+                    $('textarea[name="memo"]').val(),
+                    CKEDITOR.instances['product_content'].getData(),
+                    $('input[name="status"]:checked').val(),
+                    $('input[name="description"]').val(),
+                    $('#cover').attr('alt'),
+                    $('#cover').data('state'),
+                    $('input[name="product_meta"]').val(),
+                ];
+
+            if (!/^\d+$/.test(priority)) {
+                _swal({'status': 0, 'message': '排序須輸入正整數'});
+            } else if(act == '' || name == '' || priority == '' || model =='' || standard =='' || material == '' || produce_time == '' || lowest == '' || content == '' || status == '' || description == '' || cover == '') {
+                _swal({'status': 0, 'message': '資料未填寫完成, 請重新操作'});
+            } else {
+                $('input[name="tags_name"]').each(function(k ,v){
+                    if($(this).val() != "") tags.push($(this).val());
+                });
+                $.ajax({
+                    url : '{{url("admin/product/edit")}}',
+                    type: 'post',
+                    data: {
+                        id : id,
+                        act : act,
+                        name : name,
+                        category_id : category_id,
+                        priority : priority,
+                        model : model,
+                        standard : standard,
+                        material : material,
+                        produce_time : produce_time,
+                        lowest : lowest,
+                        memo : memo,
+                        content : content,
+                        status : status,
+                        description : description,
+                        cover : cover,
+                        cover_state : cover_state,
+                        tags : tags,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function (r) {
+                        _swal(r);
+                    },
+                    error: function (r) {
+                        r = r.responseJSON;
+                        _swal(r);
+                    },
+                });
+            }
+        })
     });
+
+    $(document).on('click', '.delete_tags', function(){
+        $(this).parents('dd.tags').remove();
+    })
 </script>
 @endsection

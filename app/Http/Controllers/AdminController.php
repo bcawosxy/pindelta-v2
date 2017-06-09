@@ -10,6 +10,7 @@ use App\Model\Categoryarea;
 use App\Model\Product;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
+use Illuminate\Routing\Route;
 
 class AdminController extends Controller
 {
@@ -59,7 +60,6 @@ class AdminController extends Controller
 
     public function categoryarea()
     {
-        $user = Auth::user();
         $data = [];
         $categoryarea = Categoryarea::where('status', '!=', 'delete')->orderBy('updated_at', 'desc')->get();
         if($categoryarea) {
@@ -161,7 +161,6 @@ class AdminController extends Controller
 
     public function category()
     {
-        $user = Auth::user();
         $data = [];
         $e_category = Category::where('category.status', '!=', 'delete')
                 ->select('category.*', 'categoryarea.name as categoryarea_name')
@@ -329,14 +328,14 @@ class AdminController extends Controller
         return view('admin.inquiry_edit');
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return redirect()->route('login');
     }
 
     public function product()
     {
-        $user = Auth::user();
         $data = [];
         $e_product = Product::where('product.status', '!=', 'delete')
             ->select('product.*', 'category.name as category_name')
@@ -366,10 +365,10 @@ class AdminController extends Controller
         $a_product = $a_category = null;
         switch ($act) {
             case 'add' :
-                $e_categoryarea = Categoryarea::where('status', 'open')->get();
-                if($e_categoryarea) {
-                    foreach ($e_categoryarea as $k0 => $v0) {
-                        $a_categoryarea[] = [
+                $e_category = Category::where('status', 'open')->get();
+                if($e_category) {
+                    foreach ($e_category as $k0 => $v0) {
+                        $a_category[] = [
                             'id' => $v0->id,
                             'name' => $v0->name,
                         ];
@@ -400,7 +399,7 @@ class AdminController extends Controller
                         'produce_time' => $v0->produce_time,
                         'lowest' => $v0->lowest,
                         'memo' => $v0->memo,
-                        'tags' => $v0->tags,
+                        'tags' => json_decode( $v0->tags, true ),
                         'coverUrl' => asset("storage/images/product/$v0->cover"),
                         'coverName' => $v0->cover,
                         'modify_id' => $v0->modify_id,
@@ -420,9 +419,66 @@ class AdminController extends Controller
         $data = [
             'act' => $act,
             'product' => $a_product,
+            'category' => $a_category,
         ];
 
         return view('admin.product_content', ['data' => $data]);
+    }
+
+    public function productEdit(Request $request)
+    {
+        $user = Auth::user();
+        //要取得的 POST Key
+        $postParams = ['id', 'act', 'name', 'category_id', 'priority', 'model', 'standard', 'material', 'produce_time', 'lowest', 'memo', 'content', 'status', 'description', 'cover', 'cover_state', 'tags'];
+        foreach ($postParams as $v0) { $$v0 = $request->$v0; }
+        if($name == '' || $priority == '' || $model == '' || $material == '' || $produce_time == '' || $status == '' || $description == '' || $cover == '' ) return json_encode_return(0, '資料未填寫完成, 請重新操作');
+        if($act == 'add' && !$category_id) return json_encode_return(0, '資料未填寫完成, 請重新操作[category_id]');
+
+        //若是新上傳的圖要進行搬移
+        if($cover_state == 'new') {
+            $coverUploadPath = public_path("upload/files/$cover");
+            $coverStoragePath  = storage_path("app/public/images/product/$cover");
+            $r_renameCover = rename($coverUploadPath, $coverStoragePath);
+            if(!$r_renameCover) return  json_encode_return(0, '圖片處理失敗, 請重新操作', url()->route('admin::product_content', ['id' => $id]));
+        }
+
+        $params = [
+            'name'  => $name,
+            'priority' => $priority,
+            'model' => $model,
+            'standard' => $standard,
+            'material' => $material,
+            'produce_time' => $produce_time,
+            'lowest' => $lowest,
+            'memo' => $memo,
+            'content' => $content,
+            'status' => $status,
+            'description' => $description,
+            'cover' => $cover,
+            'modify_id' => $user->id,
+            'tags' => json_encode($tags),
+        ];
+        $result = 0;
+        $message = '錯誤, 請重新操作';
+        $redirect = null;
+
+        if($act == 'add') {
+            $params['created_at'] = $params['updated_at'] = inserttime();
+            $params['category_id'] = $category_id ;
+            if(DB::table('product')->insert($params)) {
+                $result = 1;
+                $message = '新增資料完成';
+                $redirect = url()->route('admin::product');
+            }
+        } else {
+            if (Product::where('id', $id)->update($params)) {
+                $result = 1;
+                $message = '修改資料完成';
+                $redirect = url()->route('admin::product_content', ['id' => $id]);
+            }
+        }
+
+        return json_encode_return($result, $message, $redirect );
     }
 
     public function sociallink()

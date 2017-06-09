@@ -14,7 +14,6 @@
 
 @section('content')
 <div class="content-wrapper" style="height: auto;">
-
     <section class="content-header">
         <div class="box-body"><h2>產品項目管理</h2></div>
         <h1>
@@ -43,12 +42,12 @@
                                     <br>
                                     <dt>名稱:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱" style="width:30%" value="{{$data['category']['name']}}">
+                                        <input type="text" class="form-control" name="name" placeholder="產品類別名稱"  value="{{$data['category']['name']}}">
                                     </dd>
                                     <br>
                                     <dt>所屬類別:</dt>
                                     <dd style="<?php echo ($data['act'] == 'edit') ? 'display:none;' : null; ?>">
-                                        <select class="form-control select2" id="categoryarea" style="width: 30%;">
+                                        <select class="form-control select2" id="categoryarea">
                                             <option value="0" selected="selected">請選擇所屬類別</option>
                                             <?php
                                                 if($data['act'] == 'add') {
@@ -65,14 +64,14 @@
                                     <br>
                                     <dt>排序:</dt>
                                     <dd>
-                                        <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php echo $data['category']['priority'] ?>">
+                                        <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" value="<?php echo $data['category']['priority'] ?>">
                                     </dd>
                                     <br>
                                     <dt>狀態:</dt>
                                     <dd>
                                         <div class="form-group">
                                             <label for="r1">
-                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['category']['status'] == 'open'|| $data['categoryarea']['status'] == '') echo 'checked'; ?>>
+                                                <input id="r1" type="radio" name="status" class="minimal-red" value="open" <?php if($data['category']['status'] == 'open'|| $data['category']['status'] == '') echo 'checked'; ?>>
                                                 Open
                                             </label>&nbsp;&nbsp;&nbsp;
                                             <label for="r2">
@@ -84,7 +83,7 @@
                                     <br>
                                     <dt>介紹:</dt>
                                     <dd>
-                                        <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['category']['description']}}">
+                                        <input type="text" class="form-control" name="description" placeholder="介紹" value="{{$data['category']['description']}}">
                                     </dd>
                                     <br>
                                     <dt>封面:</dt>
@@ -138,7 +137,6 @@
         <a class="btn btn-app" id="save">
             <i class="fa fa-save"></i> 儲存(Save)
         </a>
-
         @if ($data['act'] == 'edit')
             <a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>
         @endif
@@ -151,6 +149,7 @@
 
 <script type="text/javascript">
     $(function () {
+        'use strict';
         $(".select2").select2();
         $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
             checkboxClass: 'icheckbox_minimal-red',

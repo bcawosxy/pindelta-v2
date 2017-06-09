@@ -61,7 +61,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a class="btn btn-app " id="add" href="{{url('admin/product/edit')}}">
+                        <a class="btn btn-app " id="add" href="{{url('admin/product/content')}}">
                             <i class="fa fa-plus-square-o"></i> Add
                         </a>
                     </div>
