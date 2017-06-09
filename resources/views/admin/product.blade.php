@@ -30,6 +30,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box-header">
+                            @if($errors->first())
+                                <div class="alert alert-error alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <span aria-hidden="true">&times;</span>
+                                        <span class="sr-only">Close</span>
+                                    </button> <strong>Warning !</strong> Data not found. Retry please.
+                                </div>
+                            @endif
                         </div>
                         <div class="box-body">
                             <table id="example1" class="table table-bordered table-striped">

@@ -290,7 +290,7 @@ class AdminController extends Controller
             }
         }
 
-        return json_encode_return($result, $message, $redirect );
+        return json_encode_return($result, $message, $redirect);
     }
 
     public function contact()

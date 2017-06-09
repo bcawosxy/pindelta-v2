@@ -59,12 +59,12 @@
                                                 <br>
                                                 <dt>名稱:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="name" placeholder="產品名稱" style="width:30%" value="{{$data['product']['name']}}">
+                                                    <input type="text" class="form-control" name="name" placeholder="產品名稱" value="{{$data['product']['name']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>所屬項目:</dt>
                                                 <dd style="<?php echo ($data['act'] == 'edit') ? 'display:none;' : null; ?>">
-                                                    <select class="form-control select2" id="category_id" style="width: 30%;">
+                                                    <select class="form-control select2" id="category_id">
                                                         <option value="0" selected="selected">請選擇所屬項目</option>
                                                         <?php
                                                         if($data['act'] == 'add') {
@@ -81,32 +81,32 @@
                                                 <br>
                                                 <dt>排序:</dt>
                                                 <dd>
-                                                    <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" style="width:20%" value="<?php echo $data['product']['priority'] ?>">
+                                                    <input type="number" class="form-control" name="priority" placeholder="1~255" min="0" max="255" value="<?php echo $data['product']['priority'] ?>">
                                                 </dd>
                                                 <br>
                                                 <dt>型號:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="model" placeholder="產品型號" style="width:30%" value="{{$data['product']['model']}}">
+                                                    <input type="text" class="form-control" name="model" placeholder="產品型號" value="{{$data['product']['model']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>規格:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="standard" placeholder="產品規格" style="width:30%" value="{{$data['product']['standard']}}">
+                                                    <input type="text" class="form-control" name="standard" placeholder="產品規格" value="{{$data['product']['standard']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>材質:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="material" placeholder="產品材質" style="width:30%" value="{{$data['product']['material']}}">
+                                                    <input type="text" class="form-control" name="material" placeholder="產品材質" value="{{$data['product']['material']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>生產所需時間:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="produce_time" placeholder="產品生產時間" style="width:30%" value="{{$data['product']['produce_time']}}">
+                                                    <input type="text" class="form-control" name="produce_time" placeholder="產品生產時間" value="{{$data['product']['produce_time']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>最低訂購量:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="lowest" placeholder="最低訂購量" style="width:30%" value="{{$data['product']['lowest']}}">
+                                                    <input type="text" class="form-control" name="lowest" placeholder="最低訂購量" value="{{$data['product']['lowest']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>狀態:</dt>
@@ -125,7 +125,7 @@
                                                 <br>
                                                 <dt>介紹:</dt>
                                                 <dd>
-                                                    <input type="text" class="form-control" name="description" placeholder="介紹" style="width:80%" value="{{$data['product']['description']}}">
+                                                    <input type="text" class="form-control" name="description" placeholder="介紹" value="{{$data['product']['description']}}">
                                                 </dd>
                                                 <br>
                                                 <dt>備註:</dt>
@@ -186,7 +186,6 @@
                                         </div>
                                         <!--end tab1-->
                                     </div>
-
                                     <div class="tab-pane" id="tab_2">
                                         <!-- tab2-->
                                         <div class="box-header with-border">
@@ -223,7 +222,7 @@
                                         <div class="box-body">
                                             <dl class="dl-horizontal tag_list">
                                                 <dd>
-                                                    <input type="text" class="form-control" name="product_meta" placeholder="產品SEO描述" style="width:60%" value="<?php //echo $meta ?>">
+                                                    <input type="text" class="form-control" name="product_meta" placeholder="產品SEO描述" value="">
                                                 </dd><br>
                                             </dl>
                                         </div>
@@ -239,11 +238,9 @@
         <a class="btn btn-app" href="{{url()->route('admin::product')}}">
             <i class="fa fa-angle-double-left"></i> 上一頁
         </a>
-
         <a class="btn btn-app" id="save">
             <i class="fa fa-save"></i> 儲存(Save)
         </a>
-
         <?php
         if($data['act'] =='edit') echo '<a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>';
         ?>
@@ -266,9 +263,8 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#category_id").select2();
-
         'use strict';
+        $("#category_id").select2();
         $('#fileupload').fileupload({
             url: "{{ url()->route('admin::fileUpload')  }}",
             dataType: 'json',

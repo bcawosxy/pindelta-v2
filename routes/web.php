@@ -42,7 +42,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //產品
     Route::get('/product', ['as'=> 'product', 'uses'=> 'AdminController@product']) ;
-    Route::get('/product/content/{id?}', ['as'=> 'product_content', 'uses'=> 'AdminController@product_content']) ;
+    Route::get('/product/content/{id?}', ['as'=> 'product_content', 'middleware' => 'DBCheck', 'uses'=> 'AdminController@product_content']) ;
     Route::post('/product/edit/', ['uses'=> 'AdminController@productEdit']) ;
 
     //社群網站連結
