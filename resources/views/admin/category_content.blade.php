@@ -141,7 +141,6 @@
             <a class="btn btn-app" id="delete"><i class="fa fa-trash-o"></i> 刪除(Delete)</a>
         @endif
     </section>
-
 </div>
 @endsection()
 
@@ -226,6 +225,38 @@
                 });
             }
         })
+
+        $('#delete').on('click', function(){
+            swal({
+                title: '確定刪除: {{$data['category']['name'] or null}}',
+                text: "此動作將無法還原",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '確定刪除',
+                cancelButtonText: '取消',
+            }).then(function () {
+                $.ajax({
+                    url : '{{url("admin/category/delete")}}',
+                    type: 'post',
+                    data: {
+                        id : {{ $data['category']['id'] or 'null' }},
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function (r) {
+                        _swal(r);
+                    },
+                    error: function (r) {
+                        r = r.responseJSON;
+                        _swal(r);
+                    },
+                });
+            });
+        });
     });
 </script>
 @endsection

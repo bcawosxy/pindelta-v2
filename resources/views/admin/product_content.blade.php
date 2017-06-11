@@ -258,8 +258,8 @@
 @endsection()
 
 @section('foot')
-    <script src="{{ URL::asset('js/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
-    <script src="{{ URL::asset('js/ckeditor/adapters/jquery.js')}}" type="text/javascript"></script>
+<script src="{{ URL::asset('js/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+<script src="{{ URL::asset('js/ckeditor/adapters/jquery.js')}}" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -364,6 +364,38 @@
                 });
             }
         })
+
+        $('#delete').on('click', function(){
+            swal({
+                title: '確定刪除: {{$data['product']['name'] or null}}',
+                text: "此動作將無法還原",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '確定刪除',
+                cancelButtonText: '取消',
+            }).then(function () {
+                $.ajax({
+                    url : '{{url("admin/product/delete")}}',
+                    type: 'post',
+                    data: {
+                        id : {{ $data['product']['id'] or 'null' }},
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function (r) {
+                        _swal(r);
+                    },
+                    error: function (r) {
+                        r = r.responseJSON;
+                        _swal(r);
+                    },
+                });
+            });
+        });
     });
 
     $(document).on('click', '.delete_tags', function(){

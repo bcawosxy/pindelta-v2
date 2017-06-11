@@ -112,6 +112,14 @@ class AdminController extends Controller
         return view('admin.categoryarea_content', ['data' => $data]);
     }
 
+    public function categoryareaDelete(Request $request)
+    {
+        $id = $request->id;
+        $categoryarea = new Categoryarea();
+        list($result, $message, $redirect) = $categoryarea->delCategoryarea($id);
+        return json_encode_return($result, $message, $redirect );
+    }
+
     public function categoryareaEdit(Request $request)
     {
         $user = Auth::user();
@@ -244,6 +252,14 @@ class AdminController extends Controller
         return view('admin.category_content', ['data' => $data]);
     }
 
+    public function categoryDelete(Request $request)
+    {
+        $id = $request->id;
+        $category = new Category();
+        list($result, $message, $redirect) = $category->delCategory($id);
+        return json_encode_return($result, $message, $redirect );
+    }
+    
     public function categoryEdit (Request $request)
     {
         $user = Auth::user();
@@ -425,6 +441,14 @@ class AdminController extends Controller
         return view('admin.product_content', ['data' => $data]);
     }
 
+    public function productDelete (Request $request)
+    {
+        $id = $request->id;
+        $product = new Product();
+        list($result, $message, $redirect) = $product->delProduct($id);
+        return json_encode_return($result, $message, $redirect );
+    }
+    
     public function productEdit(Request $request)
     {
         $user = Auth::user();

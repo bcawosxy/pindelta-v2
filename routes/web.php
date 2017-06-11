@@ -33,16 +33,19 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     //產品類別
     Route::get('/categoryarea', ['as'=> 'categoryarea', 'uses'=> 'AdminController@categoryarea']) ;
     Route::get('/categoryarea/content/{id?}', ['as'=> 'categoryarea_content', 'middleware' => 'DBCheck','uses'=> 'AdminController@categoryarea_content']);
+    Route::post('/categoryarea/delete/', ['uses'=> 'AdminController@categoryareaDelete']) ;
     Route::post('/categoryarea/edit/', ['uses'=> 'AdminController@categoryareaEdit']) ;
 
     //產品項目
     Route::get('/category', ['as'=> 'category', 'uses'=> 'AdminController@category']) ;
     Route::get('/category/content/{id?}', ['as'=> 'category_content', 'middleware' => 'DBCheck', 'uses'=> 'AdminController@category_content']) ;
+    Route::post('/category/delete/', ['uses'=> 'AdminController@categoryDelete']) ;
     Route::post('/category/edit/', ['uses'=> 'AdminController@categoryEdit']) ;
 
     //產品
     Route::get('/product', ['as'=> 'product', 'uses'=> 'AdminController@product']) ;
     Route::get('/product/content/{id?}', ['as'=> 'product_content', 'middleware' => 'DBCheck', 'uses'=> 'AdminController@product_content']) ;
+    Route::post('/product/delete/', ['uses'=> 'AdminController@productDelete']) ;
     Route::post('/product/edit/', ['uses'=> 'AdminController@productEdit']) ;
 
     //社群網站連結
