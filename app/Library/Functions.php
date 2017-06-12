@@ -1,4 +1,26 @@
 <?php
+if (! function_exists('array_encode_return')) {
+    /**
+     * 制式的 return array
+     * <p>v1.0 2017-06-12</p>
+     * @param number $result
+     * @param string $message
+     * @param string $redirect
+     * @param string /array $data
+     * @return array
+     */
+    function array_encode_return($result, $message = null, $redirect = null, $data = null)
+    {
+        $return = [];
+        $return['result'] = $result;
+        if ($message !== null) $return['message'] = $message;
+        if ($redirect !== null) $return['redirect'] = $redirect;
+        if ($data !== null) $return['data'] = $data;
+
+        return $return;
+    }
+}
+
 if (! function_exists('inserttime')) {
     /**
      * 回傳制式時間格式

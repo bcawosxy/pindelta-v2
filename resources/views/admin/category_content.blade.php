@@ -179,13 +179,12 @@
         }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 
         $('#save').on('click', function() {
-            var priority = $('input[name=priority]').val(),
-                [id, act, name, categoryarea_id, priority, status, description, cover, cover_state] = [
+            var [id, act, name, categoryarea_id, priority, status, description, cover, cover_state] = [
                     '{{ $data['category']['id'] }}',
                     '{{ $data['act'] }}',
                     $('input[name="name"]').val(),
                     $('#categoryarea').val(),
-                    priority,
+                    $('input[name=priority]').val(),
                     $('input[name="status"]:checked').val(),
                     $('input[name="description"]').val(),
                     $('#cover').attr('alt'),

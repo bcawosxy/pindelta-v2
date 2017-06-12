@@ -116,7 +116,9 @@ class AdminController extends Controller
     {
         $id = $request->id;
         $categoryarea = new Categoryarea();
+        DB::beginTransaction();
         list($result, $message, $redirect) = $categoryarea->delCategoryarea($id);
+        if($result) DB::commit();
         return json_encode_return($result, $message, $redirect );
     }
 
@@ -256,8 +258,10 @@ class AdminController extends Controller
     {
         $id = $request->id;
         $category = new Category();
+        DB::beginTransaction();
         list($result, $message, $redirect) = $category->delCategory($id);
-        return json_encode_return($result, $message, $redirect );
+        if($result) DB::commit();
+        return json_encode_return($result, $message, $redirect);
     }
     
     public function categoryEdit (Request $request)
@@ -445,8 +449,10 @@ class AdminController extends Controller
     {
         $id = $request->id;
         $product = new Product();
+        DB::beginTransaction();
         list($result, $message, $redirect) = $product->delProduct($id);
-        return json_encode_return($result, $message, $redirect );
+        if($result) DB::commit();
+        return json_encode_return($result, $message, $redirect);
     }
     
     public function productEdit(Request $request)

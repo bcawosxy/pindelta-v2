@@ -299,13 +299,13 @@
         });
 
         $('#save').on('click', function() {
-            var priority = $('input[name=priority]').val(), tags = [],
+            var tags = [],
                 [id, act, name, category_id,priority, model, standard, material, produce_time, lowest, memo, content, status, description, cover, cover_state, meta] = [
                     '{{ $data['product']['id'] }}',
                     '{{ $data['act'] }}',
                     $('input[name="name"]').val(),
                     $('#category_id').val(),
-                    priority,
+                    $('input[name=priority]').val(),
                     $('input[name="model"]').val(),
                     $('input[name="standard"]').val(),
                     $('input[name="material"]').val(),
@@ -368,7 +368,7 @@
         $('#delete').on('click', function(){
             swal({
                 title: '確定刪除: {{$data['product']['name'] or null}}',
-                text: "此動作將無法還原",
+                text: "此動作無法還原",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
