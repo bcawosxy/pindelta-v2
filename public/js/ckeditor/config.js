@@ -4,14 +4,10 @@
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
-// var lib_root = "http://ccckaass.tk/lib/";
-// var lib_root = "http://pindelta.net/lib/";
-var lib_root = 'http://'+location.hostname+'/lib/';
 CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#108199';
-
 
   config.toolbar = 'Full';
 
@@ -36,10 +32,10 @@ CKEDITOR.editorConfig = function( config ) {
     ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']
   ];
 
-config.filebrowserBrowseUrl = lib_root + 'ckfinder/ckfinder.html';
-config.filebrowserImageBrowseUrl = lib_root + 'ckfinder/ckfinder.html?Type=Images';
-config.filebrowserFlashBrowseUrl = lib_root + 'ckfinder/ckfinder.html?Type=Flash';
-config.filebrowserImageUploadUrl = lib_root + 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';//可上傳圖檔
+config.filebrowserBrowseUrl = '/js/ckfinder/ckfinder.html';
+config.filebrowserImageBrowseUrl = '/js/ckfinder/ckfinder.html?Type=Images';
+config.filebrowserFlashBrowseUrl = '/js/ckfinder/ckfinder.html?Type=Flash';
+config.filebrowserImageUploadUrl = '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';//可上傳圖檔
 
 // config.filebrowserUploadUrl = 'http://ccckaass.tk/lib/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'; //可上傳一般檔案
 // config.filebrowserFlashUploadUrl = 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';//可上傳Flash檔案

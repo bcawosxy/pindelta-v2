@@ -14,6 +14,7 @@
 
 @section('content')
     <script src="{{ URL::asset('js/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+    <script src="{{ URL::asset('js/ckfinder/ckfinder.js')}}" type="text/javascript"></script>
     <script src="{{ URL::asset('js/ckeditor/adapters/jquery.js')}}" type="text/javascript"></script>
 
     <div class="content-wrapper" style="height: auto;">
@@ -33,12 +34,13 @@
                 <form method="POST">
                     <textarea  id="about_value" name="about_value" class="ckeditor">{{$data['value']}}</textarea>
                     <script type="text/javascript">
-                        CKEDITOR.replace('about_value',
+                        var content = CKEDITOR.replace('about_value',
                             {
                                 toolbar : 'Full',
                                 width: '80%',
-                                height: '400px'
+                                height: '400px',
                             });
+                        CKFinder.setupCKEditor(content);
                     </script><br>
                     <a class="btn btn-app " id="save">
                         <i class="fa fa-save"></i> Save

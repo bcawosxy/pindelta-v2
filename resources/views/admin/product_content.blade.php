@@ -19,6 +19,7 @@
         }
     </style>
     <script src="{{ URL::asset('js/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+    <script src="{{ URL::asset('js/ckfinder/ckfinder.js')}}" type="text/javascript"></script>
     <script src="{{ URL::asset('js/ckeditor/adapters/jquery.js')}}" type="text/javascript"></script>
 
     <div class="content-wrapper" style="height: auto;">
@@ -136,12 +137,14 @@
                                                 <dt>內文:</dt>
                                                 <dd>
                                                     <textarea rows="10" cols="30" name="product_content" class="ckeditor" id="product_content">{{$data['product']['content']}}</textarea>
-                                                    <script type="text/javascript">CKEDITOR.replace('product_content',
-                                                            {
-                                                                toolbar : 'Full',
-                                                                width: '100%',
-                                                                height: '300px'
-                                                            });
+                                                    <script type="text/javascript">
+                                                        var content = CKEDITOR.replace('product_content',
+                                                        {
+                                                            toolbar : 'Full',
+                                                            width: '100%',
+                                                            height: '300px'
+                                                        });
+                                                        CKFinder.setupCKEditor(content);
                                                     </script>
                                                 </dd>
                                                 <br>
