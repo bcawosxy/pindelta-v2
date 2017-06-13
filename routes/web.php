@@ -50,6 +50,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //社群網站連結
     Route::get('/sociallink', ['as'=> 'sociallink', 'uses'=> 'AdminController@sociallink']) ;
+    Route::post('/sociallink/edit/', ['uses'=> 'AdminController@sociallinkEdit']) ;
 
     //聯絡我們
     Route::get('/contact', ['as'=> 'contact', 'uses'=> 'AdminController@contact']) ;

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ URL::asset('js/jquery-file-upload/css/jquery.fileupload.css')}}">
     <link rel="stylesheet" href="{{ URL::asset('adminlte/plugins/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{ URL::asset('js/sweet-alert2/css/sweet-alert2.min.css')}}">
+    <link rel="stylesheet" href="{{ URL::asset('js/jquery-ui-1.12.1.custom/jquery-ui.min.css')}}">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">

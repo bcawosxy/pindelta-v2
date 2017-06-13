@@ -7,6 +7,7 @@ use Auth;
 use App\Model\About;
 use App\Model\Category;
 use App\Model\Categoryarea;
+use App\Model\Sociallink;
 use App\Model\Product;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
@@ -513,7 +514,48 @@ class AdminController extends Controller
 
     public function sociallink()
     {
-        return view('admin.sociallink');
+        $data = [];
+        $e_sociallink = Sociallink::where('sociallink.status', '!=', 'delete')
+            ->orderBy('sociallink.id', 'asc')
+            ->get();
+
+        if($e_sociallink) {
+            foreach ($e_sociallink as $k0 => $v0) {
+                $data[] = [
+                    'id' => $v0->id,
+                    'name' => $v0->name,
+                    'url' => $v0->url,
+                    'status' => $v0->status,
+                    'priority' => $v0->priority,
+                    'updated_at' => $v0->updated_at,
+                ];
+            }
+        }
+
+        $a_icon = ['fa-google', 'fa-facebook', 'fa-flickr', 'fa-twitter', 'fa-google', 'fa-instagram', 'fa-linkedin', 'fa-pinterest', 'fa-tumblr'];
+
+        return view('admin.sociallink', ['data' => $data, 'icon' => $a_icon]);
+    }
+
+    public function sociallinkEdit(Request $request)
+    {
+        $data = json_decode($request->data, true);
+
+        foreach($data as $k0 => $v0) {
+            if( !is_url($v0[1]) ) return json_encode_return(0, '"'.$v0[1].'" 不是正確的URL格式, 請重新輸入');
+
+            $params = [
+                'url' => $v0[1],
+                'priority' => $v0[2],
+                'status' => $v0[3],
+            ];
+
+            if(!Sociallink::where('id', $v0[0])->update($params)) {
+                return json_encode_return(0, '更新資料失敗, 請重新操作');
+            }
+        }
+
+        return json_encode_return(1, '更新資料完成。', url()->route('admin::sociallink'));
     }
 
     public function system()

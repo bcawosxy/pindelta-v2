@@ -34,6 +34,19 @@ if (! function_exists('inserttime')) {
     }
 }
 
+if(! function_exists( 'is_url')) {
+    /**
+     * 判斷是否為 url
+     * <p>v1.0 2017-06-13</p>
+     * @param string $value
+     * @return mixed
+     */
+    function is_url($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_URL);
+    }
+}
+
 if (! function_exists('json_encode_return')) {
     /**-
      * Ajax呼叫時制式的回傳 return json
@@ -63,3 +76,4 @@ if (! function_exists('json_encode_return')) {
         return response(json_encode($return), $HttpStatus)->header('Content-Type', 'application/json');
     }
 }
+

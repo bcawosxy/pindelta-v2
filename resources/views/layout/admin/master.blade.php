@@ -27,6 +27,7 @@
     <script src="{{ URL::asset('js/jquery-file-upload/js/jquery.fileupload.js')}}" type="text/javascript"></script>
     <script src="{{ URL::asset('adminlte/plugins/select2/select2.full.min.js')}}" type="text/javascript"></script>
     <script src="{{ URL::asset('js/sweet-alert2/js/sweet-alert2.min.js')}}" type="text/javascript"></script>
+    <script src="{{ URL::asset('js/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}" type="text/javascript"></script>
 
 </body>
 <script>
