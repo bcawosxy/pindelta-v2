@@ -14,14 +14,13 @@
 
 @section('content')
 <div class="content-wrapper" style="height: auto;">
-
     <section class="content-header">
         <div class="box-body"><h2>聯繫我們</h2></div>
         <h1>
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{url()->route('admin::index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">聯繫我們</li>
         </ol>
     </section>
@@ -32,11 +31,11 @@
                     <div class="col-md-10">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="<?php //echo $tab1; ?>"><a href="#tab_1" data-toggle="tab"><i class="fa fa-inbox"></i>&nbsp;&nbsp;Inbox</a></li>
-                                <li class="<?php //echo $tab2; ?>"><a href="#tab_2" data-toggle="tab"><i class="fa fa-folder-open-o"></i>&nbsp;&nbsp;Archive</a></li>
+                                <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-inbox"></i>&nbsp;&nbsp;Inbox</a></li>
+                                <li class=""><a href="#tab_2" data-toggle="tab"><i class="fa fa-folder-open-o"></i>&nbsp;&nbsp;Archive</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane <?php //echo $tab1; ?>" id="tab_1">
+                                <div class="tab-pane active" id="tab_1">
                                     <div class="box-header">
                                         <div class="callout callout-success">
                                             <h4 style="font-family:微軟正黑體;">聯繫我們 - 資料列表</h4>
@@ -53,19 +52,26 @@
                                                 <th>Email</th>
                                                 <th>Tel</th>
                                                 <th>Read</th>
-
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-
-                                            ?>
+                                            @foreach ($data['open'] as $v0)
+                                                <tr>
+                                                    <td>{{$v0['id']}}</td>
+                                                    <td><a href="#">編輯</a></td>
+                                                    <td>{{$v0['last_name']}}</td>
+                                                    <td>{{$v0['first_name']}}</td>
+                                                    <td>{{$v0['email']}}</td>
+                                                    <td>{{$v0['tel']}}</td>
+                                                    <td>{{$v0['read']}}</td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
 
-                                <div class="tab-pane <?php// echo $tab2; ?>" id="tab_2">
+                                <div class="tab-pane " id="tab_2">
                                     <div class="box-header">
                                         <div class="callout callout-success" >
                                             <h4 style="font-family:微軟正黑體;">聯繫我們 - 封存列表</h4>
@@ -85,9 +91,17 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-
-                                            ?>
+                                            @foreach ($data['archive'] as $v0)
+                                                <tr>
+                                                    <td>{{$v0['id']}}</td>
+                                                    <td><a href="#">編輯</a></td>
+                                                    <td>{{$v0['last_name']}}</td>
+                                                    <td>{{$v0['first_name']}}</td>
+                                                    <td>{{$v0['email']}}</td>
+                                                    <td>{{$v0['tel']}}</td>
+                                                    <td>{{$v0['read']}}</td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>

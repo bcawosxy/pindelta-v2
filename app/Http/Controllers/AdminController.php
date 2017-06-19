@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Contact;
 use DB;
 use Auth;
 use App\Model\About;
@@ -316,7 +317,44 @@ class AdminController extends Controller
 
     public function contact()
     {
-        return view('admin.contact');
+		$data = [];
+		$e_contact = Contact::where('contact.status', '!=', 'delete')
+			->select('contact.*')
+			->orderBy('contact.updated_at', 'desc')
+			->get();
+
+		if($e_contact) {
+			foreach ($e_contact as $k0 => $v0) {
+				switch ($v0->status) {
+					case 'archive' :
+						$data['archive'][] = [
+							'id' => $v0->id,
+							'first_name' => $v0->first_name,
+							'last_name' => $v0->last_name,
+							'email' => $v0->email,
+							'tel' => $v0->tel,
+							'read' => $v0->read,
+							'status' => $v0->status,
+						];
+						break;
+
+					case 'open' :
+						$data['open'][] = [
+							'id' => $v0->id,
+							'first_name' => $v0->first_name,
+							'last_name' => $v0->last_name,
+							'email' => $v0->email,
+							'tel' => $v0->tel,
+							'read' => $v0->read,
+							'status' => $v0->status,
+						];
+						break;
+				}
+
+			}
+		}
+
+		return view('admin.contact', ['data' => $data]);
     }
 
     public function contact_edit()
