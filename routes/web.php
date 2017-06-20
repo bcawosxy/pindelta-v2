@@ -54,8 +54,9 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //聯絡我們
     Route::get('/contact', ['as'=> 'contact', 'uses'=> 'AdminController@contact']) ;
-    //聯絡我們管理
-    Route::get('/contact/edit', ['as'=> 'contact_edit', 'uses'=> 'AdminController@contact_edit']) ;
+    Route::get('/contact/content/{id?}', ['as'=> 'contact_content', 'middleware' => 'DBCheck', 'uses'=> 'AdminController@contact_content']) ;
+	Route::post('/contact/delete/', ['uses'=> 'AdminController@contactDelete']) ;
+	Route::post('/contact/edit/', ['uses'=> 'AdminController@contactEdit']) ;
 
     //產品詢價
     Route::get('/inquiry', ['as'=> 'inquiry', 'uses'=> 'AdminController@inquiry']) ;

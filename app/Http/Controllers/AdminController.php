@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Contact;
 use DB;
 use Auth;
 use App\Model\About;
 use App\Model\Category;
 use App\Model\Categoryarea;
+use App\Model\Contact;
+use App\Model\Inquiry;
 use App\Model\Sociallink;
 use App\Model\Product;
 use Illuminate\Http\Request;
@@ -71,7 +72,7 @@ class AdminController extends Controller
                     'name' => $v0->name,
                     'priority' => $v0->priority,
                     'description' => $v0->description,
-                    'status' => $v0->status,
+                    'status' => get_label($v0->status),
                 ];
             }
         }
@@ -191,7 +192,7 @@ class AdminController extends Controller
                     'description' => $v0->description,
                     'cover' => $v0->cover,
                     'modify_name' => $v0->modify_name,
-                    'status' => $v0->status,
+					'status' => get_label($v0->status),
                 ];
             }
         }
@@ -323,6 +324,11 @@ class AdminController extends Controller
 			->orderBy('contact.updated_at', 'desc')
 			->get();
 
+		$data = [
+			'open' => [],
+			'archive' => [],
+		];
+
 		if($e_contact) {
 			foreach ($e_contact as $k0 => $v0) {
 				switch ($v0->status) {
@@ -333,8 +339,8 @@ class AdminController extends Controller
 							'last_name' => $v0->last_name,
 							'email' => $v0->email,
 							'tel' => $v0->tel,
-							'read' => $v0->read,
-							'status' => $v0->status,
+							'read' => get_label($v0->read),
+							'status' => get_label($v0->status),
 						];
 						break;
 
@@ -345,8 +351,8 @@ class AdminController extends Controller
 							'last_name' => $v0->last_name,
 							'email' => $v0->email,
 							'tel' => $v0->tel,
-							'read' => $v0->read,
-							'status' => $v0->status,
+							'read' => get_label($v0->read),
+							'status' => get_label($v0->status),
 						];
 						break;
 				}
@@ -357,11 +363,95 @@ class AdminController extends Controller
 		return view('admin.contact', ['data' => $data]);
     }
 
-    public function contact_edit()
+    public function contact_content($id = null)
     {
-        return view('admin.contact_edit');
+		$user = Auth::user();
+    	$e_contact = Contact::where('contact.id', $id)
+			->select('contact.*', 'admin.name as admin_name')
+			->leftJoin('admin', 'contact.reader', '=' , 'admin.id')
+			->get();
+		foreach ($e_contact as $k0 => $v0) {
+			$a_contact = [
+				'id' => $v0->id,
+				'first_name' => $v0->first_name,
+				'last_name' => $v0->last_name,
+				'company' => $v0->company,
+				'tel' => $v0->tel,
+				'fax' => $v0->fax,
+				'address' => $v0->address,
+				'email' => $v0->email,
+				'memo' => $v0->memo,
+				'status' => $v0->status,
+				'status_text' => ($v0->status == 'open') ? '<div><span style="font-weight:bold;" class="bg-green color-palette">Open</span></div>' : '<div><span style="font-weight:bold;" class="bg-light-blue color-palette">Archive</span></div>',
+				'read' => $v0->read,
+				'reader' => $v0->reader,
+				'reader_name' => $v0->admin_name,
+				'read_time' => $v0->read_time,
+				'ip' => $v0->ip,
+				'created_at' => $v0->created_at,
+			];
+		}
+
+		//若該則留言還在未讀取過的狀態, 則同步更新讀取的相關資料
+		if( $a_contact['read'] == 'unread') {
+			$params = [
+				'read' => 'read',
+				'reader' => $user->id,
+				'read_time' => inserttime(),
+			];
+
+			Contact::where('id', $id)->update($params);
+		}
+
+
+		$data = [
+			'contact' => $a_contact,
+		];
+        return view('admin.contact_content', ['data' => $data]);
     }
 
+	public function contactDelete(Request $request)
+	{
+		$id = $request->id;
+
+		$result = 0;
+		$message = '錯誤, 請重新操作';
+		$redirect = null;
+
+		$params = [
+			'status' => 'delete',
+		];
+
+		if(Contact::where('id', $id)->update($params)) {
+			$result = 1;
+			$message = '刪除資料完成';
+			$redirect = url()->route('admin::contact', ['id' => $id]);
+		}
+
+		return json_encode_return($result, $message, $redirect);
+	}
+
+	public function contactEdit (Request $request)
+	{
+		$id = $request->id;
+
+		$result = 0;
+		$message = '錯誤, 請重新操作';
+		$redirect = null;
+
+		$params = [
+			'status' => 'archive',
+		];
+
+		if(Contact::where('id', $id)->update($params)) {
+			$result = 1;
+			$message = '封存完成。';
+			$redirect = url()->route('admin::contact', ['id' => $id]);
+		}
+
+		return json_encode_return($result, $message, $redirect);
+    }
+    
     public function fileUpload()
     {
         $options = array(
@@ -379,7 +469,56 @@ class AdminController extends Controller
 
     public function inquiry()
     {
-        return view('admin.inquiry');
+		$e_inquiry = Inquiry::select('inquiry.*', 'product.name')
+			->where('inquiry.status', '!=', 'delete')
+			->leftjoin('product', 'inquiry.product_id', '=', 'product.id')
+			->orderBy('inquiry.updated_at', 'desc')
+			->get();
+
+		$data = [
+			'open' => [],
+			'archive' => [],
+		];
+
+		if($e_inquiry) {
+			foreach ($e_inquiry as $k0 => $v0) {
+				switch ($v0->status) {
+					case 'archive' :
+						$data['archive'][] = [
+							'id' => $v0->id,
+							'first_name' => $v0->first_name,
+							'last_name' => $v0->last_name,
+							'email' => $v0->email,
+							'country' => $v0->country,
+							'company' => $v0->company,
+							'weblink' => $v0->weblink,
+							'read' => get_label($v0->read),
+							'status' => get_label($v0->status),
+							'product_id' => $v0->product_id,
+							'product_name' => $v0->name,
+						];
+						break;
+
+					case 'open' :
+						$data['open'][] = [
+							'id' => $v0->id,
+							'first_name' => $v0->first_name,
+							'last_name' => $v0->last_name,
+							'email' => $v0->email,
+							'country' => $v0->country,
+							'company' => $v0->company,
+							'weblink' => $v0->weblink,
+							'read' => get_label($v0->read),
+							'status' => get_label($v0->status),
+							'product_id' => $v0->product_id,
+							'product_name' => $v0->name,
+						];
+						break;
+				}
+			}
+		}
+
+		return view('admin.inquiry', ['data' => $data]);
     }
 
     public function inquiry_edit()
@@ -411,7 +550,7 @@ class AdminController extends Controller
                     'category_name' => $v0->category_name,
                     'priority' => $v0->priority,
                     'description' => $v0->description,
-                    'status' => $v0->status,
+					'status' => get_label($v0->status),
                 ];
             }
         }

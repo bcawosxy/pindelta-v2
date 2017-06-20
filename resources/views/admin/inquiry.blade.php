@@ -20,7 +20,7 @@
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?php //echo URL_ADMIN2_ROOT ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{url()->route('admin::index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">產品詢價</li>
         </ol>
     </section>
@@ -31,15 +31,12 @@
                     <div class="col-md-11">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="<?php //echo $tab1; ?>"><a href="#tab_1" data-toggle="tab"><i class="fa fa-inbox"></i>&nbsp;&nbsp;Inbox</a></li>
-                                <li class="<?php //echo $tab2; ?>"><a href="#tab_2" data-toggle="tab"><i class="fa fa-folder-open-o"></i>&nbsp;&nbsp;Archive</a></li>
+                                <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-inbox"></i>&nbsp;&nbsp;Inbox</a></li>
+                                <li><a href="#tab_2" data-toggle="tab"><i class="fa fa-folder-open-o"></i>&nbsp;&nbsp;Archive</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane <?php //echo $tab1; ?>" id="tab_1">
+                                <div class="tab-pane active" id="tab_1">
                                     <div class="box-header">
-                                        <div class="callout callout-success">
-                                            <h4 style="font-family:微軟正黑體;">產品詢價 - 資料列表</h4>
-                                        </div>
                                     </div>
                                     <div class="box-body">
                                         <table id="example1" class="table table-bordered table-striped">
@@ -58,19 +55,27 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-
-                                            ?>
+                                            @foreach ($data['open'] as $v0)
+                                                <tr>
+                                                    <td>{{$v0['id']}}</td>
+                                                    <td><a href="">編輯</a></td>
+                                                    <td>{{$v0['product_id']}}</td>
+                                                    <td>{{$v0['first_name']}} - {{$v0['last_name']}}</td>
+                                                    <td>{{$v0['email']}}</td>
+                                                    <td>{{$v0['country']}}</td>
+                                                    <td>{{$v0['company']}}</td>
+                                                    <td>{{$v0['weblink']}}</td>
+                                                    <td>{!! $v0['status']!!}</td>
+                                                    <td>{!! $v0['read'] !!}</td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
 
-                                <div class="tab-pane <?php //echo $tab2; ?>" id="tab_2">
+                                <div class="tab-pane " id="tab_2">
                                     <div class="box-header">
-                                        <div class="callout callout-success" >
-                                            <h4 style="font-family:微軟正黑體;">產品詢價 - 封存列表</h4>
-                                        </div>
                                     </div>
                                     <div class="box-body">
                                         <table id="example2" class="table table-bordered table-striped">
@@ -89,9 +94,20 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-
-                                            ?>
+                                            @foreach ($data['archive'] as $v0)
+                                                <tr>
+                                                    <td>{{$v0['id']}}</td>
+                                                    <td><a href="">編輯</a></td>
+                                                    <td>{{$v0['product_id']}}</td>
+                                                    <td>{{$v0['first_name']}} - {{$v0['last_name']}}</td>
+                                                    <td>{{$v0['email']}}</td>
+                                                    <td>{{$v0['country']}}</td>
+                                                    <td>{{$v0['company']}}</td>
+                                                    <td>{{$v0['weblink']}}</td>
+                                                    <td>{!! $v0['status']!!}</td>
+                                                    <td>{!! $v0['read'] !!}</td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>

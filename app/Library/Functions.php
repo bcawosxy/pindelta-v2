@@ -77,3 +77,30 @@ if (!function_exists('json_encode_return')) {
 	}
 }
 
+if (!function_exists('get_label')) {
+	/**
+	 * 後台顯示不同狀態用的底色label
+	 * <p>v1.0 2017-06-07</p>
+	 * @param string $status
+	 * @return response;
+	 */
+	function get_label($status)
+	{
+		$return = '';
+
+		switch ($status) {
+			case 'close' :
+			case 'unread' :
+				$return = '<span class="label label-warning">'.ucfirst($status).'</span>';
+				break;
+
+			case 'open' :
+			case 'read' :
+				$return = '<span class="label label-success">'.ucfirst($status).'</span>';
+				break;
+		}
+
+		return $return;
+	}
+}
+

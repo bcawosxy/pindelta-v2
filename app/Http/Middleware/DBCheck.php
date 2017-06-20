@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Model\Category;
+use App\Model\Contact;
 use App\Model\Product;
 use DB;
 use App\Model\Categoryarea;
@@ -34,6 +35,10 @@ class DBCheck
 
                 case 'category' :
                     $result = Category::where([['status', '!=', 'delete'], ['category.id', $id]])->count();
+                    break;
+
+                case 'contact' :
+                    $result = Contact::where([['status', '!=', 'delete'], ['contact.id', $id]])->count();
                     break;
 
                 case 'product' :

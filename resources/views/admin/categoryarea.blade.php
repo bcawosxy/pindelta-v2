@@ -59,7 +59,7 @@
                                             <td>{{$v0['name']}}</td>
                                             <td>{{$v0['priority']}}</td>
                                             <td>{{$v0['description']}}</td>
-                                            <td>{!! $v0['status'] == 'open' ? '<span class="label label-success">Open</span>' : '<span class="label label-warning">Close</span>' !!}</td>
+                                            <td>{!! $v0['status'] !!}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
