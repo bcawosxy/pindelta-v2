@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Model\Category;
 use App\Model\Contact;
+use App\Model\Inquiry;
 use App\Model\Product;
 use DB;
 use App\Model\Categoryarea;
@@ -27,7 +28,7 @@ class DBCheck
             $result = 0;
             //透過route name 取得資料表名稱
             $dbName = explode('/', $request->path())[1];
-            //目前驗證 categoryarea / category / product
+            //目前驗證 categoryarea / category / product / contact / inquiry
             switch ($dbName) {
                 case 'categoryarea' :
                     $result = Categoryarea::where([['status', '!=', 'delete'], ['categoryarea.id', $id]])->count();
@@ -43,6 +44,10 @@ class DBCheck
 
                 case 'product' :
                     $result = Product::where([['status', '!=', 'delete'], ['product.id', $id]])->count();
+                    break;
+
+                case 'inquiry' :
+                    $result = Inquiry::where([['status', '!=', 'delete'], ['inquiry.id', $id]])->count();
                     break;
             }
         }

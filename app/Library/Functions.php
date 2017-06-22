@@ -89,6 +89,10 @@ if (!function_exists('get_label')) {
 		$return = '';
 
 		switch ($status) {
+			case 'archive' :
+				$return = '<div><span style="font-weight:bold;" class="bg-light-blue color-palette">'.ucfirst($status).'</span></div>';
+				break;
+
 			case 'close' :
 			case 'unread' :
 				$return = '<span class="label label-warning">'.ucfirst($status).'</span>';

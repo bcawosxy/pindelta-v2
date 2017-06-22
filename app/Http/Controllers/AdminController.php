@@ -382,7 +382,7 @@ class AdminController extends Controller
 				'email' => $v0->email,
 				'memo' => $v0->memo,
 				'status' => $v0->status,
-				'status_text' => ($v0->status == 'open') ? '<div><span style="font-weight:bold;" class="bg-green color-palette">Open</span></div>' : '<div><span style="font-weight:bold;" class="bg-light-blue color-palette">Archive</span></div>',
+				'status_text' => get_label($v0->status),
 				'read' => $v0->read,
 				'reader' => $v0->reader,
 				'reader_name' => $v0->admin_name,
@@ -521,10 +521,98 @@ class AdminController extends Controller
 		return view('admin.inquiry', ['data' => $data]);
     }
 
-    public function inquiry_edit()
+    public function inquiry_content($id = null)
     {
-        return view('admin.inquiry_edit');
+		$user = Auth::user();
+    	$e_inquiry = Inquiry::select('inquiry.*', 'admin.name as admin_name', 'product.name as product_name')
+			->where('inquiry.id', $id)
+			->leftJoin('admin', 'inquiry.reader', '=' , 'admin.id')
+			->leftJoin('product', 'inquiry.product_id', '=' , 'product.id')
+			->get();
+
+		foreach ($e_inquiry as $k0 => $v0) {
+			$a_inquiry = [
+				'id' => $v0->id,
+				'product_id' => $v0->product_id,
+				'product_name' => $v0->product_name,
+				'first_name' => $v0->first_name,
+				'last_name' => $v0->last_name,
+				'email' => $v0->email,
+				'quantity' => $v0->quantity,
+				'country' => $v0->country,
+				'company' => $v0->company,
+				'weblink' => $v0->weblink,
+				'demand' => $v0->demand,
+				'memo' => $v0->memo,
+				'status' => $v0->status,
+				'status_text' => get_label($v0->status),
+				'read' => $v0->read,
+				'reader' => $v0->reader,
+				'reader_name' => $v0->admin_name,
+				'read_time' => $v0->read_time,
+				'ip' => $v0->ip,
+				'created_at' => $v0->created_at,
+			];
+		}
+
+		//若該則留言還在未讀取過的狀態, 則同步更新讀取的相關資料
+		if( $a_inquiry['read'] == 'unread') {
+			$params = [
+				'read' => 'read',
+				'reader' => $user->id,
+				'read_time' => inserttime(),
+			];
+
+			Inquiry::where('id', $id)->update($params);
+		}
+
+		$data = [
+			'inquiry' => $a_inquiry,
+		];
+    	return view('admin.inquiry_content', ['data' => $data]);
     }
+
+	public function inquiryEdit(Request $request)
+	{
+		$id = $request->id;
+
+		$result = 0;
+		$message = '錯誤, 請重新操作';
+		$redirect = null;
+
+		$params = [
+			'status' => 'archive',
+		];
+
+		if(Inquiry::where('id', $id)->update($params)) {
+			$result = 1;
+			$message = '封存完成。';
+			$redirect = url()->route('admin::inquiry', ['id' => $id]);
+		}
+
+		return json_encode_return($result, $message, $redirect);
+    }
+
+	public function inquiryDelete(Request $request)
+	{
+		$id = $request->id;
+
+		$result = 0;
+		$message = '錯誤, 請重新操作';
+		$redirect = null;
+
+		$params = [
+			'status' => 'delete',
+		];
+
+		if(Inquiry::where('id', $id)->update($params)) {
+			$result = 1;
+			$message = '刪除資料完成';
+			$redirect = url()->route('admin::inquiry', ['id' => $id]);
+		}
+
+		return json_encode_return($result, $message, $redirect);
+	}
 
     public function logout()
     {

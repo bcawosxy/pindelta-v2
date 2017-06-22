@@ -15,14 +15,13 @@
 @section('content')
 <div class="content-wrapper" style="height: auto;">
     <section class="content-header">
-        <div class="box-body"><h2>聯繫我們</h2></div>
+        <div class="box-body"><h2>產品詢價</h2></div>
         <h1>
             <small><p class="text-light-blue"></p></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{url()->route('admin::index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="{{url()->route('admin::contact')}}">聯繫我們</a></li>
-            <li class="active">詳情</li>
+            <li><a href="{{url()->route('admin::contact')}}">產品詢價</a></li>
         </ol>
     </section>
     <section class="content">
@@ -38,29 +37,33 @@
                             <div class="box-body">
                                 <dl class="dl-horizontal">
                                     <dt>編號:</dt>
-                                    <dd>#{{$data['contact']['id']}}</dd>
+                                    <dd>#{{$data['inquiry']['id']}}</dd>
+                                    <dt>詢價產品:</dt>
+                                    <dd>{{$data['inquiry']['product_name']}}</dd>
                                     <dt>姓名:</dt>
-                                    <dd>{{$data['contact']['last_name']}} - {{$data['contact']['first_name']}}</dd>
+                                    <dd>{{$data['inquiry']['last_name']}} - {{$data['inquiry']['first_name']}}</dd>
                                     <dt>公司:</dt>
-                                    <dd>{{$data['contact']['company']}}</dd>
-                                    <dt>電話:</dt>
-                                    <dd>{{$data['contact']['tel']}}</dd>
-                                    <dt>傳真:</dt>
-                                    <dd>{{$data['contact']['fax']}}</dd>
-                                    <dt>地址:</dt>
-                                    <dd>{{$data['contact']['address']}}</dd>
+                                    <dd>{{$data['inquiry']['company']}}</dd>
                                     <dt>Email:</dt>
-                                    <dd>{{$data['contact']['email']}}</dd>
+                                    <dd>{{$data['inquiry']['email']}}</dd>
+                                    <dt>地區:</dt>
+                                    <dd>{{$data['inquiry']['country']}}</dd>
+                                    <dt>數量:</dt>
+                                    <dd>{{$data['inquiry']['quantity']}}</dd>
+                                    <dt>網站:</dt>
+                                    <dd>{{$data['inquiry']['weblink']}}</dd>
+                                    <dt>Logo需求:</dt>
+                                    <dd>{{$data['inquiry']['demand']}}</dd>
                                     <dt>備註:</dt>
-                                    <dd>{{$data['contact']['memo']}}</dd>
+                                    <dd>{{$data['inquiry']['memo']}}</dd>
                                     <dt>狀態:</dt>
-                                    <dd>{!! $data['contact']['status_text'] !!}</dd>
-                                    <dt>人員:</dt>
-                                    <dd>{{$data['contact']['reader_name']}}</dd>
+                                    <dd>{!! $data['inquiry']['status_text'] !!}</dd>
+                                    <dt>閱讀人員:</dt>
+                                    <dd>{{$data['inquiry']['reader_name']}}</dd>
                                     <dt>閱讀時間:</dt>
-                                    <dd>{{$data['contact']['read_time']}}</dd>
+                                    <dd>{{$data['inquiry']['read_time']}}</dd>
                                     <dt>聯繫時間:</dt>
-                                    <dd>{{$data['contact']['created_at']}}</dd>
+                                    <dd>{{$data['inquiry']['created_at']}}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -69,16 +72,16 @@
             </div>
         </div>
     </section>
-    <a class="btn btn-app" href="{{url()->route('admin::contact')}}">
+    <a class="btn btn-app" href="{{url()->route('admin::inquiry')}}">
         <i class="fa fa-angle-double-left"></i> 上一頁
     </a>
-    <?php
-    if($data['contact']['status'] == 'open') {
-        echo '<a class="btn btn-app " id="archive">
+	<?php
+	if($data['inquiry']['status'] == 'open') {
+		echo '<a class="btn btn-app " id="archive">
 						<i class="fa fa-envelope"></i> 封存(Archive)
 					</a>';
-    }
-    ?>
+	}
+	?>
     <a class="btn btn-app " id="delete">
         <i class="fa fa-trash-o"></i> 刪除(Delete)
     </a>
@@ -91,10 +94,10 @@
     $(function () {
         $('#archive').on('click', function(){
             $.ajax({
-                url : '{{url("admin/contact/edit")}}',
+                url : '{{url("admin/inquiry/edit")}}',
                 type: 'post',
                 data: {
-                    id : {{ $data['contact']['id'] or 'null' }},
+                    id : {{ $data['inquiry']['id'] or 'null' }},
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -112,7 +115,7 @@
 
         $('#delete').on('click', function(){
             swal({
-                title: '確定刪除此筆回報資料嗎?',
+                title: '確定刪除此筆詢價資料嗎?',
                 text: "此動作將無法還原",
                 type: 'warning',
                 showCancelButton: true,
@@ -122,10 +125,10 @@
                 cancelButtonText: '取消',
             }).then(function () {
                 $.ajax({
-                    url : '{{url("admin/contact/delete")}}',
+                    url : '{{url("admin/inquiry/delete")}}',
                     type: 'post',
                     data: {
-                        id : {{ $data['contact']['id'] or 'null' }},
+                        id : {{ $data['inquiry']['id'] or 'null' }},
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

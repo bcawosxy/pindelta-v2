@@ -60,11 +60,12 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //產品詢價
     Route::get('/inquiry', ['as'=> 'inquiry', 'uses'=> 'AdminController@inquiry']) ;
-    //產品詢價管理
-    Route::get('/inquiry/edit', ['as'=> 'inquiry_edit', 'uses'=> 'AdminController@inquiry_edit']) ;
+	Route::get('/inquiry/content/{id?}', ['as'=> 'inquiry_content', 'middleware' => 'DBCheck', 'uses'=> 'AdminController@inquiry_content']) ;
+	Route::post('/inquiry/delete/', ['uses'=> 'AdminController@inquiryDelete']) ;
+	Route::post('/inquiry/edit/', ['uses'=> 'AdminController@inquiryEdit']) ;
 
     //系統參數
-    Route::get('/system', ['as'=> 'inquiry_edit', 'uses'=> 'AdminController@inquiry_edit']) ;
+    Route::get('/system', ['as'=> 'inquiry_edit', 'uses'=> 'AdminController@system']) ;
 
     //管理員清單
     Route::get('/admins', ['as'=> 'admins', 'uses'=> 'AdminController@admins']) ;

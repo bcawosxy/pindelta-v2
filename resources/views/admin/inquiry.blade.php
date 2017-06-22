@@ -58,8 +58,8 @@
                                             @foreach ($data['open'] as $v0)
                                                 <tr>
                                                     <td>{{$v0['id']}}</td>
-                                                    <td><a href="">編輯</a></td>
-                                                    <td>{{$v0['product_id']}}</td>
+                                                    <td><a href="{{url()->route('admin::inquiry_content', ['id' => $v0['id']])}}">編輯</a></td>
+                                                    <td>{{$v0['product_name']}}</td>
                                                     <td>{{$v0['first_name']}} - {{$v0['last_name']}}</td>
                                                     <td>{{$v0['email']}}</td>
                                                     <td>{{$v0['country']}}</td>
@@ -97,8 +97,8 @@
                                             @foreach ($data['archive'] as $v0)
                                                 <tr>
                                                     <td>{{$v0['id']}}</td>
-                                                    <td><a href="">編輯</a></td>
-                                                    <td>{{$v0['product_id']}}</td>
+                                                    <td><a href="{{url()->route('admin::inquiry_content', ['id' => $v0['id']])}}">編輯</a></td>
+                                                    <td>{{$v0['product_name']}}</td>
                                                     <td>{{$v0['first_name']}} - {{$v0['last_name']}}</td>
                                                     <td>{{$v0['email']}}</td>
                                                     <td>{{$v0['country']}}</td>
@@ -128,7 +128,22 @@
 
 <script type="text/javascript">
     $(function () {
+        $("#example1").DataTable({
+            "order": [[ 0, "desc" ]],
+            "columnDefs": [
+                { "orderable": false, "targets": 9 }
+            ]
 
+        });
+
+
+        $("#example2").DataTable({
+            "order": [[ 0, "desc" ]],
+            "columnDefs": [
+                { "orderable": false, "targets": 9 }
+            ]
+
+        });
     });
 </script>
 @endsection
