@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use DB;
 use Auth;
 use App\Model\About;
@@ -11,6 +12,7 @@ use App\Model\Contact;
 use App\Model\Inquiry;
 use App\Model\Sociallink;
 use App\Model\Product;
+use App\Model\System;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
 use Illuminate\Routing\Route;
@@ -825,7 +827,54 @@ class AdminController extends Controller
 
     public function system()
     {
-        return view('admin.system');
+		$data = [];
+		$e_system = System::get();
+
+		if($e_system) {
+			$data = json_decode($e_system[0], true);
+			$data['social'] = [
+				'skin' => [
+					'birman' => ($data['social_skin'] == 'birman') ? 'checked="true"' : null,
+					'classic' => ($data['social_skin'] == 'classic') ? 'checked="true"' : null,
+					'flat' => ($data['social_skin'] == 'flat') ? 'checked="true"' : null,
+				],
+				'look' => [
+					'horizontal' => ($data['social_look'] == 'horizontal') ? 'checked="true"' : null,
+					'single' => ($data['social_look'] == 'single') ? 'checked="true"' : null,
+				],
+			];
+		}
+
+    	return view('admin.system', ['data' => $data]);
     }
 
+	public function systemEdit(Request $request)
+	{
+		//要取得的 POST Key
+		$postParams = ['web_title', 'web_description', 'office_info_phone', 'office_info_email', 'r1', 'r2', 'r3'];
+		foreach ($postParams as $v0) { $$v0 = $request->$v0; }
+
+		$params = [
+			'web_title'  => $web_title,
+			'web_description' => $web_description,
+			'office_info_phone' => $office_info_phone,
+			'office_info_email' => $office_info_email,
+			'social_look' => $r1,
+			'social_skin' => $r2,
+			'maintain' => ($r3=='open') ? 1 : 0,
+		];
+
+		$result = 0;
+		$message = '錯誤, 請重新操作';
+		$redirect = null;
+
+		if(System::where('id', 1)->update($params)) {
+			$result = 1;
+			$message = '更新資料完成。';
+			$redirect = url()->route('admin::system');
+		}
+
+		return json_encode_return($result, $message, $redirect );
+
+	}
 }

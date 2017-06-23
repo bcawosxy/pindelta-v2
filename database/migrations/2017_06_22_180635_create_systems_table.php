@@ -21,6 +21,7 @@ class CreateSystemsTable extends Migration
 			$table->string('web_description');
 			$table->string('office_info_phone');
 			$table->string('office_info_email');
+			$table->boolean('maintain');
 			$table->enum('social_look', ['single', 'horizontal']);
 			$table->enum('social_skin', ['flat', 'classic', 'birman']);
 			$table->timestamps();

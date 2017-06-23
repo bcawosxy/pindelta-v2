@@ -65,7 +65,8 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 	Route::post('/inquiry/edit/', ['uses'=> 'AdminController@inquiryEdit']) ;
 
     //系統參數
-    Route::get('/system', ['as'=> 'inquiry_edit', 'uses'=> 'AdminController@system']) ;
+    Route::get('/system', ['as'=> 'system', 'uses'=> 'AdminController@system']) ;
+    Route::post('/system/edit', ['as'=> 'system_edit', 'uses'=> 'AdminController@systemEdit']) ;
 
     //管理員清單
     Route::get('/admins', ['as'=> 'admins', 'uses'=> 'AdminController@admins']) ;
