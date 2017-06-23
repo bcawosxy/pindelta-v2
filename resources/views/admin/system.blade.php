@@ -138,7 +138,6 @@
             </div>
         </div>
     </section>
-
     <a class="btn btn-app " id="save">
         <i class="fa fa-save"></i> Save All
     </a>

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 
+
 use DB;
 use Auth;
 use App\Model\About;
+use App\Model\Admin;
 use App\Model\Category;
 use App\Model\Categoryarea;
 use App\Model\Contact;
@@ -60,7 +62,51 @@ class AdminController extends Controller
 
     public function admins()
     {
-        return view('admin.admins');
+		$data = [];
+		$e_admin = Admin::get();
+
+		if($e_admin) {
+			foreach ($e_admin as $k0 => $v0) {
+				$data[] = [
+					'id' => $v0->id,
+					'account' => $v0->account,
+					'name' => $v0->name,
+					'email' => $v0->email,
+					'ip' => $v0->ip,
+					'updated_at' => $v0->updated_at,
+				];
+			}
+		}
+
+		return view('admin.admins', ['data' => $data]);
+    }
+
+	public function adminsEdit(Request $request)
+	{
+
+		$data = json_decode($request->data, true);
+
+		$result = 0;
+		$message = '錯誤, 請重新操作';
+		$redirect = null;
+
+		foreach ($data as $k0 => $v0) {
+			$tmp = [
+				'account' => $v0['account'],
+				'name' => $v0['name'],
+				'email' => $v0['email'],
+			];
+
+			if(!Admin::where('id', $v0['id'])->update($tmp)) {
+				return json_encode_return($result, $message, $redirect );
+			}
+		}
+
+		$result = 1;
+		$message = '修改資料完成';
+		$redirect = url()->route('admin::admins');
+
+		return json_encode_return($result, $message, $redirect );
     }
 
     public function categoryarea()

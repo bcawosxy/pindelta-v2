@@ -70,6 +70,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
 
     //管理員清單
     Route::get('/admins', ['as'=> 'admins', 'uses'=> 'AdminController@admins']) ;
+    Route::post('/admins/edit', ['as'=> 'admins_edit', 'uses'=> 'AdminController@adminsEdit']) ;
 
     //登出
     Route::get('/logout', ['as'=> 'logout', 'uses'=> 'AdminController@logout']) ;
