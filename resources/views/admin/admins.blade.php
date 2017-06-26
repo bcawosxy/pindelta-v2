@@ -35,7 +35,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>帳號</th>
+                                <th>登入帳號</th>
                                 <th>密碼</th>
                                 <th>名稱</th>
                                 <th>Email</th>
@@ -71,7 +71,6 @@
 
 <script type="text/javascript">
     $(function () {
-
         $('#save').on('click', function() {
             var data = new Array();
             $('tr.data').each(function (k, v){

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use Hash;
 use App\Model\About;
 use App\Model\Admin;
 use App\Model\Category;
@@ -89,6 +90,7 @@ class AdminController extends Controller
 		$result = 0;
 		$message = '錯誤, 請重新操作';
 		$redirect = null;
+		$passwordEdit = false;
 
 		foreach ($data as $k0 => $v0) {
 			$tmp = [
@@ -97,16 +99,22 @@ class AdminController extends Controller
 				'email' => $v0['email'],
 			];
 
+			if($v0['password']) {
+				$tmp['password'] = Hash::make($v0['password']);
+				$passwordEdit = true;
+			}
+
 			if(!Admin::where('id', $v0['id'])->update($tmp)) {
 				return json_encode_return($result, $message, $redirect );
 			}
 		}
 
+
 		$result = 1;
-		$message = '修改資料完成';
+		$message = ($passwordEdit) ? '修改資料完成, 下次登入時請使用新密碼登入' : '修改資料完成';
 		$redirect = url()->route('admin::admins');
 
-		return json_encode_return($result, $message, $redirect );
+		return json_encode_return($result, $message, $redirect);
     }
 
     public function categoryarea()
