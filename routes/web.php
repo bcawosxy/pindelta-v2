@@ -1,22 +1,16 @@
 <?php
 
-//use Illuminate\Http\Response;
+//Pindelta Route Group
+Route::group(['prefix'=>'/', 'as'=>'pindelta::'], function() {
+	Route::get('/', ['as' => 'index', 'uses'=> 'PindeltaController@index']) ;
 
-Route::get('/', function () {
-    return view('index');
+	Route::get('/about', ['as' => 'about', 'uses'=> 'PindeltaController@about']) ;
+
+	Route::get('/contact', ['as' => 'contact', 'uses'=> 'PindeltaController@contact']) ;
+
+	Route::get('/login', ['as' => 'login' , 'uses' => 'PindeltaController@ShowLoginPage']);
+	Route::post('login', ['uses' => 'PindeltaController@login']);
 });
-
-Route::get('/about', function () {
-    return view('about');
-});
-
-Route::get('/contact', function () {
-    return view('contact');
-});
-
-Route::get('/login', ['as' => 'login' , 'uses' => 'PindeltaController@ShowLoginPage']);
-
-Route::post('login', ['uses' => 'PindeltaController@login']);
 
 //Admin Route Group
 Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-
 use DB;
 use Auth;
 use Hash;
@@ -520,6 +518,16 @@ class AdminController extends Controller
 
     public function index()
     {
+		/**
+		 * 圖表一 : 逐周的量表
+		 */
+		//本周最後一天(星期日)
+		$this_week = date('Y-m-d', strtotime('+7 day', time()-86400*date('w')));
+		$series_line = []; $rate = 7;
+		for($i=1; $i<13; $i = $i+1) {$tmp[] = date('Y-m-d 23:59:59', strtotime('-'.($i*$rate).' day', strtotime($this_week)));}
+		array_unshift($tmp,$this_week);
+		$week = array_reverse($tmp);
+
         return view('admin.index');
     }
 
@@ -673,7 +681,7 @@ class AdminController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('pindelta::login');
     }
 
     public function product()
@@ -930,5 +938,13 @@ class AdminController extends Controller
 
 		return json_encode_return($result, $message, $redirect );
 
+	}
+
+	public function test(Request $request)
+	{
+//		return response('')->withCookie(cookie('name', 'my value', 60));
+		setcookie('name', null, -1, '/');
+		echo ($request->cookie('name')) ? 1 : 2;
+//		echo $value;
 	}
 }

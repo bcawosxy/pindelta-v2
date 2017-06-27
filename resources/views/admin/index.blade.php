@@ -119,7 +119,14 @@ chart: {
             type: 'column',
             yAxis: 1,
             data: [],
-        },
+        }, {
+            name: "Categoryarea", data: [24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25], type: 'spline'
+        }, {
+            name: "Category",
+            data: [81, 81, 81, 81, 81, 82, 82, 82, 82, 83, 83, 83, 83],
+            type: 'spline'
+        }, {name: "Product", data: [123, 123, 126, 126, 126, 129, 129, 129, 129, 130, 130, 130, 130], type: 'spline'},
+
     ]
 });
 

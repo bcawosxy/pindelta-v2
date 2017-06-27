@@ -2,13 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use DB;
+use Closure;
 use App\Model\Category;
 use App\Model\Contact;
 use App\Model\Inquiry;
 use App\Model\Product;
-use DB;
 use App\Model\Categoryarea;
-use Closure;
 
 class DBCheck
 {

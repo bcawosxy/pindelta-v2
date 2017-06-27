@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Http\Request;
+use App\Model\Access;
+
 if (!function_exists('array_encode_return')) {
 	/**
 	 * 制式的 return array
@@ -108,3 +111,25 @@ if (!function_exists('get_label')) {
 	}
 }
 
+if(!function_exists('set_ip_log')) {
+	function set_ip_log() {
+		$request = new Request();
+		$ip = $request->ip();
+		$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$e_access = Access::where('ip', $ip)->first();
+		$result = json_decode( $e_access  , true);
+
+		$param = [
+			'ip' => $ip,
+			'url' => $url,
+		];
+
+		if($result) {
+			$param['num'] = $result['num']+1;
+			Access::where('ip', $ip)->update($param);
+		} else {
+			$param['num'] = 1;
+			Access::where('ip', $ip)->insert($param);
+		}
+	}
+}
