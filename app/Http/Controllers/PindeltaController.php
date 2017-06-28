@@ -14,6 +14,7 @@ class PindeltaController extends Controller
 	public function __construct(Request $request)
 	{
 		/**
+		 *  紀錄訪客訪問前台次數
 		 *  2016-07-02 記錄IP
 		 *  2017-06-27 調整為Laravel方式處理
 		 */

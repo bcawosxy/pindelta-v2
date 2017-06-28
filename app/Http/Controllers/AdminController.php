@@ -14,6 +14,7 @@ use App\Model\Inquiry;
 use App\Model\Sociallink;
 use App\Model\Product;
 use App\Model\System;
+use App\Model\Viewed;
 use Illuminate\Http\Request;
 use App\Library\UploadHandler;
 use Illuminate\Routing\Route;
@@ -528,7 +529,80 @@ class AdminController extends Controller
 		array_unshift($tmp,$this_week);
 		$week = array_reverse($tmp);
 
-        return view('admin.index');
+		foreach ($week as $k0 => $v0) {
+			// Categoryarea
+			$c_categoryarea = Categoryarea::where([['status', '!=', 'delete'], ['created_at', '<', $v0]])->orWhere([['status', '=', 'delete'], ['updated_at', '>', $v0]])->count();
+			$data_categoryarea[] = $c_categoryarea;
+
+			// Category
+			$c_category = Category::where([['status', '!=', 'delete'], ['created_at', '<', $v0]])->orWhere([['status', '=', 'delete'], ['updated_at', '>', $v0]])->count();
+			$data_category[] = $c_category;
+
+			// Product
+			$c_product = Product::where([['status', '!=', 'delete'], ['created_at', '<', $v0]])->orWhere([['status', '=', 'delete'], ['updated_at', '>', $v0]])->count();
+			$data_product[] = $c_product;
+
+			// Viewed
+			//從上周至本周($v0)的vieded統計,第一周沒有基準參考值,故用data -7 處理
+			$start_day = ($k0 == 0) ? date('Y-m-d', strtotime('-7 day', strtotime($v0))) : date('Y-m-d', strtotime($week[($k0-1)])) ;
+			$end_day = date('Y-m-d',strtotime('-1 day' ,strtotime($v0)));
+
+			$c_viewed = DB::table('viewed')->whereBetween('date', [$start_day, $end_day])->SUM('count');
+			$data_viwed[] = $c_viewed;
+
+			$chart_categories[] = '\'~'.date('m/d', strtotime($v0)).'\'';
+		}
+
+		$series_line = [
+			['name'=>'Categoryarea', 'data'=>implode(',', $data_categoryarea)],
+			['name'=>'Category', 'data'=>implode(',' ,$data_category)],
+			['name'=>'Product', 'data'=>implode(',' ,$data_product)],
+		];
+
+		/**
+		 * 圖表二 : 各類別下項目及產品數量
+		 */
+		$series_pie = [];
+
+		$e_categoryarea = Categoryarea::select('categoryarea.id as categoryarea_id', 'categoryarea.name as categoryarea_name', 'category.id as category_id')
+										->where([['category.id', '!=', '""'], ['categoryarea.status', '!=', 'delete'], ['category.status', '!=', 'delete']])
+										->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
+										->groupBy('categoryarea_id')->get();
+		$a_categoryarea = json_decode($e_categoryarea, true);
+
+		//所有的categoryarea_id
+		foreach ($a_categoryarea as $k0 => $v0) {
+			$pie_data = [];
+			$prodcut_num = 0;
+
+			$e_category = Category::select('category.name as category_name', DB::raw('COUNT(category_id) as y'))
+				->where([['product.id', '!=', '""'], ['category.categoryarea_id', '=', $v0['categoryarea_id']], ['category.status', '!=', 'delete'], ['product.status', '!=', 'delete']])
+				->leftJoin('product', 'product.category_id', '=' , 'category.id')
+				->groupBy('category_id')->get();
+
+			foreach (json_decode($e_category, true) as $k1 => $v1) {
+				$pie_data[] = '{name:"' . $v1['category_name'] . '", y:' . $v1['y'] . '},';
+				$prodcut_num += $v1['y'];
+			};
+
+			if(count($pie_data) == 0) continue;
+			$series_pie[] = [
+				'categoryarea_id' => $v0['categoryarea_id'],
+				'categoryarea_name' => $v0['categoryarea_name'],
+				'category_num' => count($pie_data),
+				'product_num' => $prodcut_num,
+				'data' => implode('', $pie_data),
+			];
+		}
+
+		$data = [
+			'chart_categories' => $chart_categories,
+			'data_viwed'  => $data_viwed,
+			'series_line' => $series_line,
+			'series_pie' => $series_pie,
+		];
+
+        return view('admin.index', ['data' => $data]);
     }
 
     public function inquiry()

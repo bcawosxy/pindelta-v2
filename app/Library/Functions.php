@@ -24,6 +24,37 @@ if (!function_exists('array_encode_return')) {
 	}
 }
 
+if (!function_exists('get_label')) {
+	/**
+	 * 後台顯示不同狀態用的底色label
+	 * <p>v1.0 2017-06-07</p>
+	 * @param string $status
+	 * @return response;
+	 */
+	function get_label($status)
+	{
+		$return = '';
+
+		switch ($status) {
+			case 'archive' :
+				$return = '<div><span style="font-weight:bold;" class="bg-light-blue color-palette">'.ucfirst($status).'</span></div>';
+				break;
+
+			case 'close' :
+			case 'unread' :
+				$return = '<span class="label label-warning">'.ucfirst($status).'</span>';
+				break;
+
+			case 'open' :
+			case 'read' :
+				$return = '<span class="label label-success">'.ucfirst($status).'</span>';
+				break;
+		}
+
+		return $return;
+	}
+}
+
 if (!function_exists('inserttime')) {
 	/**
 	 * 回傳制式時間格式
@@ -80,56 +111,27 @@ if (!function_exists('json_encode_return')) {
 	}
 }
 
-if (!function_exists('get_label')) {
-	/**
-	 * 後台顯示不同狀態用的底色label
-	 * <p>v1.0 2017-06-07</p>
-	 * @param string $status
-	 * @return response;
-	 */
-	function get_label($status)
-	{
-		$return = '';
-
-		switch ($status) {
-			case 'archive' :
-				$return = '<div><span style="font-weight:bold;" class="bg-light-blue color-palette">'.ucfirst($status).'</span></div>';
-				break;
-
-			case 'close' :
-			case 'unread' :
-				$return = '<span class="label label-warning">'.ucfirst($status).'</span>';
-				break;
-
-			case 'open' :
-			case 'read' :
-				$return = '<span class="label label-success">'.ucfirst($status).'</span>';
-				break;
-		}
-
-		return $return;
-	}
-}
-
-if(!function_exists('set_ip_log')) {
+if (!function_exists('set_ip_log')) {
 	function set_ip_log() {
 		$request = new Request();
 		$ip = $request->ip();
-		$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-		$e_access = Access::where('ip', $ip)->first();
-		$result = json_decode( $e_access  , true);
+		if($ip) {
+			$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$e_access = Access::where('ip', $ip)->first();
+			$result = json_decode($e_access, true);
 
-		$param = [
-			'ip' => $ip,
-			'url' => $url,
-		];
+			$param = [
+				'ip' => $ip,
+				'url' => $url,
+			];
 
-		if($result) {
-			$param['num'] = $result['num']+1;
-			Access::where('ip', $ip)->update($param);
-		} else {
-			$param['num'] = 1;
-			Access::where('ip', $ip)->insert($param);
+			if ($result) {
+				$param['num'] = $result['num'] + 1;
+				Access::where('ip', $ip)->update($param);
+			} else {
+				$param['num'] = 1;
+				Access::where('ip', $ip)->insert($param);
+			}
 		}
 	}
 }
