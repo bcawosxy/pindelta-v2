@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Model\About;
 use App\Model\Admin;
 use App\Model\Viewed;
 use Illuminate\Http\Request;
@@ -35,7 +36,14 @@ class PindeltaController extends Controller
 
 	public function about()
 	{
-		return view('about');
+		$data = [];
+		$about = About::where('category', 'about_c')->first();
+
+		$data = [
+			'value' => ($about->value) ? $about->value : null,
+		];
+
+		return view('about', ['data' => $data]);
 	}
 
 	public function contact()

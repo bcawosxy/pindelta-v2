@@ -1,6 +1,6 @@
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="shop-index.html"><img src="images/banner.png" alt="Metronic Shop UI"></a>
+        <a class="site-logo" href="{{ url()->route('pindelta::index') }}"><img src="images/banner.png" alt="Metronic Shop UI"></a>
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
         <!-- BEGIN NAVIGATION -->
         <div class="header-navigation margin-bottom-5">

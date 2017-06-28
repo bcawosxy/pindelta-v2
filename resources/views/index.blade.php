@@ -22,7 +22,7 @@
                                     <img src="images/list1.jpg" class="img-responsive" alt="Berry Lace Dress">
                                     <div></div>
                                 </div>
-                                <h3><a href="shop-item.html">3D Stickers</a></h3>
+                                <h3><a href="{{ url()->route('pindelta::index') }}">3D Stickers</a></h3>
                                 <div class="pi-price pi-description">Carcorder/Car Charger/Car Vacuum Cleaner/Magnet Car Air Vent Holder</div>
                             </div>
                         </div>
