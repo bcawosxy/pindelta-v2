@@ -455,6 +455,8 @@ class AdminController extends Controller
 				'read_time' => inserttime(),
 			];
 
+			$a_contact['read_time'] = inserttime();
+
 			Contact::where('id', $id)->update($params);
 		}
 
@@ -1014,11 +1016,4 @@ class AdminController extends Controller
 
 	}
 
-	public function test(Request $request)
-	{
-//		return response('')->withCookie(cookie('name', 'my value', 60));
-		setcookie('name', null, -1, '/');
-		echo ($request->cookie('name')) ? 1 : 2;
-//		echo $value;
-	}
 }

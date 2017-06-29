@@ -18,7 +18,6 @@ class CreateAccessesTable extends Migration
 			$table->integer('num')->unsigned();
 			$table->string('url');
 			$table->timestamp('updatetime');
-			$table->primary('ip');
         });
     }
 

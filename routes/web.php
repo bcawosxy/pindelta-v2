@@ -7,6 +7,7 @@ Route::group(['prefix'=>'/', 'as'=>'pindelta::'], function() {
 	Route::get('/about', ['as' => 'about', 'uses'=> 'PindeltaController@about']) ;
 
 	Route::get('/contact', ['as' => 'contact', 'uses'=> 'PindeltaController@contact']) ;
+	Route::post('/contact/add', ['uses' => 'PindeltaController@contactAdd']);
 
 	Route::get('/login', ['as' => 'login' , 'uses' => 'PindeltaController@ShowLoginPage']);
 	Route::post('login', ['uses' => 'PindeltaController@login']);
@@ -14,9 +15,6 @@ Route::group(['prefix'=>'/', 'as'=>'pindelta::'], function() {
 
 //Admin Route Group
 Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
-    //
-    Route::get('/test', ['as' => 'test', 'uses'=> 'AdminController@test']) ;
-
     // index , 圖表
     Route::get('/', ['as' => 'index', 'uses'=> 'AdminController@index']) ;
 

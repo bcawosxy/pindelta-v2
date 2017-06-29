@@ -12,7 +12,7 @@
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="Metronic Shop UI description" name="description">
     <meta content="Metronic Shop UI keywords" name="keywords">
     <meta content="keenthemes" name="author">
@@ -43,7 +43,9 @@
     <!-- Page level plugin styles END -->
 
     <!-- Theme styles START -->
+    @if(\Request::route()->getName() != 'pindelta::contact')
     <link href="{{ URL::asset('template/pages/css/components.css')}}" rel="stylesheet">
+    @endif
     <link href="{{ URL::asset('template/pages/css/slider.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('template/pages/css/style-shop.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ URL::asset('template/corporate/css/style.css')}}" rel="stylesheet">
@@ -52,5 +54,7 @@
     <link href="{{ URL::asset('template/corporate/css/custom.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/pindelta.css')}}" rel="stylesheet">
     <!-- Theme styles END -->
+
+    <link href="{{ URL::asset('js/sweet-alert2/css/sweet-alert2.min.css')}}" rel="stylesheet" >
 </head>
 <!-- Head END -->

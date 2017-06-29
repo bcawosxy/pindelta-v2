@@ -12,7 +12,6 @@
                 <li><a href="{{url('about')}}">About Us</a></li>
                 <li><a href="{{url('')}}">Products</a></li>
                 <li><a href="{{url('contact')}}">Coutact Us</a></li>
-                <li><a href="{{url('login')}}">Login</a></li>
             </ul>
         </div>
         <!-- END NAVIGATION -->
