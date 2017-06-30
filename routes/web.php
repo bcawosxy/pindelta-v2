@@ -2,7 +2,7 @@
 
 //Pindelta Route Group
 Route::group(['prefix'=>'/', 'as'=>'pindelta::'], function() {
-	Route::get('/', ['as' => 'index', 'uses'=> 'PindeltaController@index']) ;
+	Route::get('/{page?}', ['as' => 'index', 'uses'=> 'PindeltaController@index']) ;
 
 	Route::get('/about', ['as' => 'about', 'uses'=> 'PindeltaController@about']) ;
 

@@ -115,6 +115,10 @@
         width: 20%;
         float: left;
     }
+
+    .pi-description {
+        min-height: 55px;
+    }
 }
 
 @media (min-width: 1200px) {

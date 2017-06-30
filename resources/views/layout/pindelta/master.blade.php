@@ -45,6 +45,7 @@
         });
     </script>
     <script src="{{ URL::asset('js/sweet-alert2/js/sweet-alert2.min.js')}}" type="text/javascript"></script>
+    <script src="{{ URL::asset('js/infinite-scroll/infinite-scroll.pkgd.min.js')}}" type="text/javascript"></script>
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
 <script>

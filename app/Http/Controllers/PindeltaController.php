@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
+use App\Model\Category;
+use App\Model\Categoryarea;
 use App\Model\Contact;
 use App\Model\System;
 use App\Model\About;
@@ -89,9 +92,31 @@ class PindeltaController extends Controller
 		return json_encode_return($result, $message, $redirect );
 	}
 	
-	public function index()
+	public function index($page = 1)
 	{
-		return view('index');
+		$unit = 5;
+		$num = $page*$unit;
+
+		$e_categoryarea = Categoryarea::select(DB::raw('DISTINCT(categoryarea.id) as categoryarea_id'), 'categoryarea.cover', 'categoryarea.name', 'categoryarea.description')
+			->where([['category.status','open'], ['categoryarea.status','open']])
+			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
+			->groupBy('categoryarea.id')
+			->get();
+
+		foreach ($e_categoryarea as $k0 => $v0) {
+			$a_categoryarea[] = [
+				'id' => $v0->categoryarea_id,
+				'cover' => asset("storage/images/categoryarea/$v0->cover"),
+				'description' => $v0->description,
+				'name' => $v0->name,
+				'url' => url(''),
+			];
+		}
+
+		$data = [
+			'categoryarea' => $a_categoryarea,
+		];
+		return view('index', ['data' => $data]);
 	}
 
 	public function login(Request $request)
