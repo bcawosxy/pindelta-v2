@@ -1,8 +1,10 @@
 <?php
-
 //Pindelta Route Group
 Route::group(['prefix'=>'/', 'as'=>'pindelta::'], function() {
-	Route::get('/{page?}', ['as' => 'index', 'uses'=> 'PindeltaController@index']) ;
+	Route::get('/', ['as' => 'index', 'uses'=> 'PindeltaController@index']) ;
+	Route::get('/index/{page?}', ['as' => 'index', 'uses'=> 'PindeltaController@index']) ;
+
+	Route::get('/categoryarea/{id?}/{page?}', ['as' => 'categoryarea', 'uses'=> 'PindeltaController@categoryarea']) ;
 
 	Route::get('/about', ['as' => 'about', 'uses'=> 'PindeltaController@about']) ;
 
@@ -70,5 +72,4 @@ Route::group(['prefix'=>'admin', 'as'=>'admin::'], function() {
     //檔案上傳
     Route::post('/fileUpload/', ['as' => 'fileUpload', 'uses'=> 'AdminController@fileUpload']) ;
 });
-
 

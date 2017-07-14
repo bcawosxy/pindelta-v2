@@ -51,6 +51,37 @@ class PindeltaController extends Controller
 		return view('about', ['data' => $data]);
 	}
 
+	public function categoryarea($id, $page = 1)
+	{
+		$sidebar = $this->getSideBar();
+
+		$page = 1;
+		$unit = 10;
+		$num = ($page-1)*$unit;
+
+		$e_category = Category::select('category.id', 'category.cover', 'category.name', 'category.description')
+			->where([['category.status','open'], ['category.categoryarea_id', $id]])
+			->skip($num)->take($unit)
+			->get();
+
+		foreach ($e_category as $k0 => $v0) {
+			$a_category[] = [
+				'id' => $v0->id,
+				'cover' => asset("storage/images/category/$v0->cover"),
+				'description' => $v0->description,
+				'name' => $v0->name,
+				'url' => url()->route('pindelta::categoryarea'),
+			];
+		}
+
+		$data = [
+			'category' => $a_category,
+			'sidebar' => $sidebar,
+			'activeCategoryarea_id' => $id,
+		];
+		return view('categoryarea', ['data' => $data]);
+	}
+
 	public function contact()
 	{
 		$e_system = System::first();
@@ -91,16 +122,48 @@ class PindeltaController extends Controller
 
 		return json_encode_return($result, $message, $redirect );
 	}
-	
+
+	public function getSideBar()
+	{
+		//取出 categoryarea_id
+		$select = ['categoryarea.id AS categoryarea_id', 'categoryarea.name AS categoryarea_name', 'category.id AS category_id', 'category.name AS category_name'];
+		$e_categoryarea = Categoryarea::select($select)
+			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
+			->where([['categoryarea.status','open'], ['category.status', 'open']])->get();
+
+		foreach (json_decode($e_categoryarea, true) as $k0 => $v0) {
+			$id[$v0['categoryarea_id']][] = [
+				'category_id' => $v0['category_id'],
+				'category_name' => $v0['category_name'],
+			];
+		}
+
+		$tmp = [];
+		foreach (json_decode($e_categoryarea, true) as $k0 => $v0) {
+
+			if(in_array($v0['categoryarea_id'], $tmp)) continue;
+			$sideBar[] = [
+				'categoryarea_id' => $v0['categoryarea_id'],
+				'categoryarea_name' => $v0['categoryarea_name'],
+				'category' => $id[$v0['categoryarea_id']],
+			];
+
+			$tmp[] = $v0['categoryarea_id'];
+		}
+
+		$return = $sideBar;
+		return $return;
+	}
 	public function index($page = 1)
 	{
-		$unit = 5;
-		$num = $page*$unit;
+		$unit = 10;
+		$num = ($page-1)*$unit;
 
 		$e_categoryarea = Categoryarea::select(DB::raw('DISTINCT(categoryarea.id) as categoryarea_id'), 'categoryarea.cover', 'categoryarea.name', 'categoryarea.description')
 			->where([['category.status','open'], ['categoryarea.status','open']])
 			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
 			->groupBy('categoryarea.id')
+			->skip($num)->take($unit)
 			->get();
 
 		foreach ($e_categoryarea as $k0 => $v0) {
@@ -109,7 +172,7 @@ class PindeltaController extends Controller
 				'cover' => asset("storage/images/categoryarea/$v0->cover"),
 				'description' => $v0->description,
 				'name' => $v0->name,
-				'url' => url(''),
+				'url' => url()->route('pindelta::categoryarea', ['id'=> $v0->categoryarea_id]),
 			];
 		}
 
