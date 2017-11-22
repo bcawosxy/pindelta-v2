@@ -56,12 +56,13 @@
                         	echo '<div class="col-md-5ths col-sm-3 col-xs-4">
                                 <div class="product-item">
                                     <div class="pi-img-wrapper">
-                                        <img src="'.$v0['cover'].'" class="img-responsive" alt="">
+                                        <img src="'.$v0['cover'].'" class="img-responsive">
                                         <div>
                                             <a href="'.$v0['cover'].'" class="btn btn-default fancybox-button">Zoom</a>
                                         </div>
                                     </div>
-                                    <h3><a href="#">'.$v0['id'].'</a></h3>
+                                    <h3><a href="#">'.$v0['name'].'</a></h3>
+                                    <div class="pi-price pi-description">123</div>
                                 </div>
                             </div>';
 
