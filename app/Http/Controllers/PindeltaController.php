@@ -154,17 +154,14 @@ class PindeltaController extends Controller
 		$return = $sideBar;
 		return $return;
 	}
+
 	public function index($page = 1)
 	{
-		$unit = 10;
-		$num = ($page-1)*$unit;
 
-		$e_categoryarea = Categoryarea::select(DB::raw('DISTINCT(categoryarea.id) as categoryarea_id'), 'categoryarea.cover', 'categoryarea.name', 'categoryarea.description')
-			->where([['category.status','open'], ['categoryarea.status','open']])
-			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
-			->groupBy('categoryarea.id')
-			->skip($num)->take($unit)
-			->get();
+		$categoryarea = new Categoryarea();
+		$e_categoryarea = $categoryarea->getCategoryarea($page);
+
+		$a_categoryarea = [];
 
 		foreach ($e_categoryarea as $k0 => $v0) {
 			$a_categoryarea[] = [
