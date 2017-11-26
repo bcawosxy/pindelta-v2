@@ -125,34 +125,39 @@ class PindeltaController extends Controller
 
 	public function getSideBar()
 	{
-		//取出 categoryarea_id
-		$select = ['categoryarea.id AS categoryarea_id', 'categoryarea.name AS categoryarea_name', 'category.id AS category_id', 'category.name AS category_name'];
-		$e_categoryarea = Categoryarea::select($select)
-			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
-			->where([['categoryarea.status','open'], ['category.status', 'open']])->get();
+        //取出側邊選單資料
+        $select = [ 'categoryarea.id AS cg_id',
+            'categoryarea.name AS cg_name',
+            'category.id AS c_id',
+            'category.name AS c_name',
+            'product.id AS p_id',
+            'product.name AS p_name'];
+        $e_product = Product::select($select)
+            ->leftJoin('category', 'product.category_id', '=' , 'category.id')
+            ->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
+            ->where([['categoryarea.status','open'], ['category.status', 'open']])->get();
 
-		foreach (json_decode($e_categoryarea, true) as $k0 => $v0) {
-			$id[$v0['categoryarea_id']][] = [
-				'category_id' => $v0['category_id'],
-				'category_name' => $v0['category_name'],
-			];
-		}
+        $a_product = json_decode($e_product, true);
+        $a_categoryarea_id = array_unique( array_column($a_product,'cg_id'));
+        $a_category_id = array_unique( array_column($a_product,'c_id'));
 
-		$tmp = [];
-		foreach (json_decode($e_categoryarea, true) as $k0 => $v0) {
 
-			if(in_array($v0['categoryarea_id'], $tmp)) continue;
-			$sideBar[] = [
-				'categoryarea_id' => $v0['categoryarea_id'],
-				'categoryarea_name' => $v0['categoryarea_name'],
-				'category' => $id[$v0['categoryarea_id']],
-			];
 
-			$tmp[] = $v0['categoryarea_id'];
-		}
+        $tmp = [];
+        foreach (json_decode($e_categoryarea, true) as $k0 => $v0) {
 
-		$return = $sideBar;
-		return $return;
+            if(in_array($v0['categoryarea_id'], $tmp)) continue;
+            $sideBar[] = [
+                'categoryarea_id' => $v0['categoryarea_id'],
+                'categoryarea_name' => $v0['categoryarea_name'],
+                'category' => $id[$v0['categoryarea_id']],
+            ];
+
+            $tmp[] = $v0['categoryarea_id'];
+        }
+
+        $return = $sideBar;
+        return $return;
 	}
 
 	public function index($page = 1)

@@ -28,24 +28,7 @@
             <!-- BEGIN SIDEBAR & CONTENT -->
             <div class="row margin-bottom-40">
                 <!-- BEGIN SIDEBAR -->
-                <div class="sidebar col-md-3 col-sm-5">
-                    <ul class="list-group margin-bottom-25 sidebar-menu">
-                        <?php
-                            foreach ( $data['sidebar'] as $k0 => $v0 ) {
-                            	$active1 = ($data['activeCategoryarea_id'] == $v0['categoryarea_id']) ? 'active' : null;
-                                $display = ($data['activeCategoryarea_id'] == $v0['categoryarea_id']) ? 'display:block' : 'display:none';
-								echo '<li class="list-group-item clearfix '.$active1.' ">
-                                            <a href="'.url()->route('pindelta::categoryarea', ['id'=>$v0['categoryarea_id']]).'"><i class="fa fa-angle-right"></i>'.$v0['categoryarea_name'].'</a>
-                                            <ul class="dropdown-menu" style="'.$display.'">';
-                                                foreach ( $v0['category'] as $k1 => $v1) {
-                                                    echo '<li><a href="javascript:void(0);"><i class="fa fa-caret-right"></i>'.$v1['category_name'].'</a></li>';
-                                                }
-                                            echo '</ul>
-                                    </li>';
-                         }
-                        ?>
-                    </ul>
-                </div>
+                    @include('sidebar')
                 <!-- END SIDEBAR -->
 
                 <!-- BEGIN CONTENT -->
