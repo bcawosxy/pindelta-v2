@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use App\Model\Category;
 use App\Model\Categoryarea;
+use App\Model\Product;
 use App\Model\Contact;
 use App\Model\System;
 use App\Model\About;
@@ -53,7 +54,7 @@ class PindeltaController extends Controller
 
 	public function categoryarea($id, $page = 1)
 	{
-		$sidebar = $this->getSideBar();
+		$sidebar = $this->getSideBar(1);
 
 		$page = 1;
 		$unit = 10;
@@ -123,25 +124,32 @@ class PindeltaController extends Controller
 		return json_encode_return($result, $message, $redirect );
 	}
 
-	public function getSideBar()
+	public function getSideBar($categoryarea_id)
 	{
-        //取出側邊選單資料
-        $select = [ 'categoryarea.id AS cg_id',
-            'categoryarea.name AS cg_name',
-            'category.id AS c_id',
-            'category.name AS c_name',
-            'product.id AS p_id',
-            'product.name AS p_name'];
-        $e_product = Product::select($select)
+        //取出側邊選單categoryarea
+        $select = [ 'categoryarea.id AS cg_id', 'categoryarea.name AS cg_name'];
+        $e_categoryarea = Product::select($select)
             ->leftJoin('category', 'product.category_id', '=' , 'category.id')
             ->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
-            ->where([['categoryarea.status','open'], ['category.status', 'open']])->get();
+			->groupBy('cg_id')
+			->orderBy('categoryarea.priority', 'ASC')
+            ->where([['categoryarea.status','open'], ['category.status', 'open'], ['product.status', 'open']])->get();
 
-        $a_product = json_decode($e_product, true);
-        $a_categoryarea_id = array_unique( array_column($a_product,'cg_id'));
-        $a_category_id = array_unique( array_column($a_product,'c_id'));
+		$a_categoryarea = json_decode($e_categoryarea, true);
+
+		//取得當頁categoryarea_id
+		$select = [ 'category.id  AS c_id, category.name AS c_name'];
+		$e_category = Category::select($select)
+			->leftJoin('product', 'product.category_id', '=' , 'category.id')
+			->groupBy('c_id')
+			->orderBy('category.priority', 'ASC')
+			->where([['category.categoryarea_id', $categoryarea_id], ['category.status', 'open'], ['product.status', 'open']])->get();
+
+		$e_category = json_decode($e_category, true);
 
 
+        print_r($e_category);
+		exit;
 
         $tmp = [];
         foreach (json_decode($e_categoryarea, true) as $k0 => $v0) {
