@@ -44,7 +44,7 @@
                                             <a href="'.$v0['cover'].'" class="btn btn-default fancybox-button">Zoom</a>
                                         </div>
                                     </div>
-                                    <h3><a href="'.url()->route('pindelta::category', ['cg_id'=>$data['activeCategoryarea_id'] , 'id'=>$v0['id']]).'">'.$v0['name'].'</a></h3>
+                                    <h3><a href="'.url()->route('pindelta::product', ['id'=>$v0['id']]).'">'.$v0['name'].'</a></h3>
                                     <div class="pi-price pi-description">123</div>
                                 </div>
                             </div>';

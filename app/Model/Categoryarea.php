@@ -44,7 +44,7 @@ class Categoryarea extends Model
         return [$result, $message, $redirect];
     }
 
-    public function getCategoryarea($page	) {
+    public function getCategoryarea($page) {
 		$unit = 10;
 		$num = ($page-1)*$unit;
 
@@ -52,7 +52,8 @@ class Categoryarea extends Model
 			->where([['category.status','open'], ['categoryarea.status','open']])
 			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
 			->groupBy('categoryarea.id')
-			->skip($num)->take($unit)
+			->orderBy('categoryarea.priority', 'ASC')
+            ->skip($num)->take($unit)
 			->get();
 
     	return $e_categoryarea;

@@ -6,6 +6,10 @@ Route::group(['prefix'=>'/', 'as'=>'pindelta::'], function() {
 
 	Route::get('/categoryarea/{id?}/{page?}', ['as' => 'categoryarea', 'uses'=> 'PindeltaController@categoryarea']) ;
 
+	Route::get('/category/{cg_id?}/{id?}/{page?}', ['as' => 'category', 'uses'=> 'PindeltaController@category']) ;
+
+    Route::get('/product/{id?}', ['as' => 'product', 'uses'=> 'PindeltaController@product']) ;
+
 	Route::get('/about', ['as' => 'about', 'uses'=> 'PindeltaController@about']) ;
 
 	Route::get('/contact', ['as' => 'contact', 'uses'=> 'PindeltaController@contact']) ;
