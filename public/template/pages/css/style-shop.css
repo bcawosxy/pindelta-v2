@@ -318,8 +318,8 @@ Header and header elements
 
 /* breadcrumb */
 .ecommerce .breadcrumb {
-	text-transform: uppercase;
-	font: 13px "PT Sans Narrow", sans-serif;
+	/*text-transform: uppercase;*/
+	font: 14px "PT Sans Narrow", sans-serif;
 }
 
 /* Catalogue styles */
@@ -367,6 +367,11 @@ Header and header elements
 .pi-img-wrapper {
 	position: relative;
 }
+
+.pi-img-wrapper:hover {
+	opacity: 0.6;
+}
+
 .pi-img-wrapper div {
 	background: rgba(0,0,0,0.3);
 	position: absolute;
@@ -783,9 +788,9 @@ div.radio.disabled span.checked, div.radio.disabled.active span.checked {
 }
 
 .ecommerce .sidebar {
-	font: 15px 'PT Sans Narrow', sans-serif;
+	font: 16px 'PT Sans Narrow', sans-serif;
 	color: #3E4D5C;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 }
 .ecommerce .sidebar .list-group-item {
     background: #fff;

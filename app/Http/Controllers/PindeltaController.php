@@ -56,18 +56,25 @@ class PindeltaController extends Controller
     {
         $sidebar = $this->getSideBar($cg_id, $id);
 
+        $categoryarea = new Categoryarea();
+		$a_categoryarea = $categoryarea->getCategoryarea($cg_id);
+
+
+        $category = new Category();
+		$a_category = $category->getCategory($id);
+
         $page = 1;
         $unit = 10;
         $num = ($page-1)*$unit;
 
-        $e_category = Product::select('product.id', 'product.cover', 'product.name', 'product.description')
+        $e_product = Product::select('product.id', 'product.cover', 'product.name', 'product.description')
             ->where([['product.status','open'], ['product.category_id', $id]])
             ->skip($num)->take($unit)
             ->orderBy('product.priority', 'ASC')
             ->get();
 
-        foreach ($e_category as $k0 => $v0) {
-            $a_category[] = [
+        foreach ($e_product as $k0 => $v0) {
+            $a_product[] = [
                 'id' => $v0->id,
                 'cover' => asset("storage/images/product/$v0->cover"),
                 'description' => $v0->description,
@@ -77,10 +84,13 @@ class PindeltaController extends Controller
         }
 
         $data = [
-            'category' => $a_category,
+			'categoryarea' => $a_categoryarea,
+			'category' => $a_category,
+            'product' => $a_product,
             'sidebar' => $sidebar,
             'activeCategoryarea_id' => $id,
         ];
+
         return view('category', ['data' => $data]);
 	}
 
@@ -88,15 +98,19 @@ class PindeltaController extends Controller
 	{
 		$sidebar = $this->getSideBar($id);
 
+		$categoryarea = new Categoryarea();
+		$a_categoryarea = $categoryarea->getCategoryarea($id);
+
 		$page = 1;
 		$unit = 10;
 		$num = ($page-1)*$unit;
 
 		$e_category = Category::select('category.id', 'category.cover', 'category.name', 'category.description')
-			->where([['category.status','open'], ['category.categoryarea_id', $id]])
+			->leftJoin('product', 'product.category_id', '=' , 'category.id')
+			->where([['category.status','open'], ['category.categoryarea_id', $id], ['product.status', 'open']])
 			->skip($num)->take($unit)
 			->orderBy('category.priority', 'ASC')
-            ->get();
+			->distinct()->get();
 
 		foreach ($e_category as $k0 => $v0) {
 			$a_category[] = [
@@ -109,10 +123,12 @@ class PindeltaController extends Controller
 		}
 
 		$data = [
+			'categoryarea' => $a_categoryarea,
 			'category' => $a_category,
 			'sidebar' => $sidebar,
 			'activeCategoryarea_id' => $id,
 		];
+
 		return view('categoryarea', ['data' => $data]);
 	}
 
@@ -179,6 +195,7 @@ class PindeltaController extends Controller
 			->where([['category.categoryarea_id', $categoryarea_id], ['category.status', 'open'], ['product.status', 'open']])->get();
 		$a_category = json_decode($e_category, true);
 
+		//填入當前category_id
 		if(!is_null($category_id)) {
 		    foreach($a_category as $k0 => $v0) {
 		        if($category_id == $v0['c_id']) {
@@ -201,7 +218,7 @@ class PindeltaController extends Controller
 	public function index($page = 1)
 	{
 		$categoryarea = new Categoryarea();
-		$e_categoryarea = $categoryarea->getCategoryarea($page);
+		$e_categoryarea = $categoryarea->getCategoryareas($page);
 
 		$a_categoryarea = [];
 

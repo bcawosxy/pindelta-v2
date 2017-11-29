@@ -947,6 +947,7 @@ Sidebar
     line-height: inherit;
     padding: 0;
     white-space: inherit;
+	letter-spacing: 0.7px;
 }
 .sidebar-menu .dropdown-menu li > a:hover, .sidebar-menu .dropdown-menu li > a:focus, .sidebar-menu li.active > a, .sidebar-menu li.active > a:hover {
 	background: none !important;

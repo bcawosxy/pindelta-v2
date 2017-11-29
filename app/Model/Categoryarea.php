@@ -10,11 +10,11 @@ class Categoryarea extends Model
 {
     protected $table = 'categoryarea';
 
-    /**
-     *  刪除單筆類別
-     * @param $id
-     * @return array
-     */
+	/**
+	 *  刪除單筆類別
+	 * @param $id
+	 * @return Array
+	 */
     public function delCategoryarea($id)
     {
         $user = Auth::user();
@@ -44,7 +44,23 @@ class Categoryarea extends Model
         return [$result, $message, $redirect];
     }
 
-    public function getCategoryarea($page) {
+	/**
+	 *  取得一筆 Categoryarea
+	 * @param $id
+	 * @return Array
+	 */
+    public function getCategoryarea($id)
+	{
+		$e_categoryarea = Categoryarea::where([['categoryarea.status','open'], ['categoryarea.id', $id]])->first();
+		return json_decode($e_categoryarea, true);
+	}
+
+	/**
+	 *  取得多筆 Categoryarea (首頁瀑布流)
+	 * @param $page
+	 * @return Array
+	 */
+	public function getCategoryareas($page) {
 		$unit = 10;
 		$num = ($page-1)*$unit;
 

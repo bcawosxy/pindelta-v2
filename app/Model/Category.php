@@ -78,4 +78,16 @@ class Category extends Model
         return [$result, $message, $redirect];
 
     }
+
+	/**
+	 *  取得一筆 Category
+	 * @param $id
+	 * @return Array
+	 */
+	public function getCategory($id)
+	{
+		$e_category = Category::where([['category.status','open'], ['category.id', $id]])->first();
+		return json_decode($e_category, true);
+	}
+
 }

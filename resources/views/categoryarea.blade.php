@@ -20,11 +20,12 @@
 
     <div class="main">
         <div class="container">
+
             <ul class="breadcrumb">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="">Store</a></li>
-                <li class="active">Men category</li>
+                <li><a href="<?php echo  url()->route('pindelta::index'); ?>">Home</a></li>
+                <li class="active"><?php echo $data['categoryarea']['name'] ?></li>
             </ul>
+
             <!-- BEGIN SIDEBAR & CONTENT -->
             <div class="row margin-bottom-40">
                 <!-- BEGIN SIDEBAR -->
@@ -39,13 +40,12 @@
                         	echo '<div class="col-md-5ths col-sm-3 col-xs-4">
                                 <div class="product-item">
                                     <div class="pi-img-wrapper">
-                                        <img src="'.$v0['cover'].'" class="img-responsive">
-                                        <div>
-                                            <a href="'.$v0['cover'].'" class="btn btn-default fancybox-button">Zoom</a>
-                                        </div>
+                                        <a href="'.url()->route('pindelta::category', ['cg_id'=>$data['activeCategoryarea_id'] , 'id'=>$v0['id']]).'"><img src="'.$v0['cover'].'" class="img-responsive"></a>
                                     </div>
                                     <h3><a href="'.url()->route('pindelta::category', ['cg_id'=>$data['activeCategoryarea_id'] , 'id'=>$v0['id']]).'">'.$v0['name'].'</a></h3>
-                                    <div class="pi-price pi-description">123</div>
+                                    <div class="pi-price pi-description">
+                                        '.$v0['description'].'
+                                    </div>
                                 </div>
                             </div>';
 
