@@ -38,6 +38,7 @@ class PindeltaController extends Controller
 
 			setcookie('viewed', $tmp0, time() + 86400, '/');
 		}
+
 	}
 
 	public function about()
@@ -49,27 +50,21 @@ class PindeltaController extends Controller
 			'value' => ($about->value) ? $about->value : null,
 		];
 
-		return view('about', ['data' => $data]);
+		return view('about', ['data' => $data, 'pageInfo' => $this->getPageInfo()]);
 	}
 
-    public function category($cg_id, $id, $page=1)
+    public function category($cg_id, $id)
     {
         $sidebar = $this->getSideBar($cg_id, $id);
 
         $categoryarea = new Categoryarea();
 		$a_categoryarea = $categoryarea->getCategoryarea($cg_id);
 
-
         $category = new Category();
 		$a_category = $category->getCategory($id);
 
-        $page = 1;
-        $unit = 10;
-        $num = ($page-1)*$unit;
-
         $e_product = Product::select('product.id', 'product.cover', 'product.name', 'product.description')
             ->where([['product.status','open'], ['product.category_id', $id]])
-            ->skip($num)->take($unit)
             ->orderBy('product.priority', 'ASC')
             ->get();
 
@@ -91,24 +86,19 @@ class PindeltaController extends Controller
             'activeCategoryarea_id' => $id,
         ];
 
-        return view('category', ['data' => $data]);
+        return view('category', ['data' => $data, 'pageInfo' => $this->getPageInfo()]);
 	}
 
-	public function categoryarea($id, $page = 1)
+	public function categoryarea($id)
 	{
 		$sidebar = $this->getSideBar($id);
 
 		$categoryarea = new Categoryarea();
 		$a_categoryarea = $categoryarea->getCategoryarea($id);
 
-		$page = 1;
-		$unit = 10;
-		$num = ($page-1)*$unit;
-
 		$e_category = Category::select('category.id', 'category.cover', 'category.name', 'category.description')
 			->leftJoin('product', 'product.category_id', '=' , 'category.id')
 			->where([['category.status','open'], ['category.categoryarea_id', $id], ['product.status', 'open']])
-			->skip($num)->take($unit)
 			->orderBy('category.priority', 'ASC')
 			->distinct()->get();
 
@@ -129,7 +119,7 @@ class PindeltaController extends Controller
 			'activeCategoryarea_id' => $id,
 		];
 
-		return view('categoryarea', ['data' => $data]);
+		return view('categoryarea', ['data' => $data, 'pageInfo' => $this->getPageInfo()]);
 	}
 
 	public function contact()
@@ -139,7 +129,7 @@ class PindeltaController extends Controller
 			'contact' => json_decode($e_system, true),
 		];
 
-		return view('contact', ['data' => $data]);
+		return view('contact', ['data' => $data, 'pageInfo' => $this->getPageInfo()]);
 	}
 
 	public function contactAdd (Request $request)
@@ -173,6 +163,18 @@ class PindeltaController extends Controller
 		return json_encode_return($result, $message, $redirect );
 	}
 
+	public function getPageInfo()
+	{
+		$system = new System();
+		$e_system = $system->getSystem();
+
+		$info = [
+			'title' =>  $e_system['web_title'],
+			'description' => $e_system['web_description'],
+		];
+		return $info;
+	}
+	
 	public function getSideBar($categoryarea_id, $category_id = null)
 	{
         //取出側邊選單categoryarea
@@ -235,7 +237,7 @@ class PindeltaController extends Controller
 		$data = [
 			'categoryarea' => $a_categoryarea,
 		];
-		return view('index', ['data' => $data]);
+		return view('index', ['data' => $data, 'pageInfo' => $this->getPageInfo()]);
 	}
 
 	public function login(Request $request)
@@ -259,23 +261,17 @@ class PindeltaController extends Controller
 
 	public function product($id)
     {
-        //取出側邊選單categoryarea
-        $select = [ 'categoryarea.id AS cg_id', 'categoryarea.name AS cg_name'];
-        $e_categoryarea = Product::select($select)
-            ->leftJoin('category', 'product.category_id', '=' , 'category.id')
-            ->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
-            ->groupBy('cg_id')
-            ->orderBy('categoryarea.priority', 'ASC')
-            ->where([['categoryarea.status','open'], ['category.status', 'open'], ['product.status', 'open']])->get();
+		$product = new Product();
+		$a_product = $product->getProduct($id);
 
-        $a_categoryarea = json_decode($e_categoryarea, true);
-
-        $sidebar = $this->getSideBar($id);
+        $sidebar = $this->getSideBar($a_product['cg_id'], $a_product['c_id']);
 
         $data = [
+			'product' => $a_product,
             'sidebar' => $sidebar,
         ];
-        return view('product', ['data' => $data]);
+
+        return view('product', ['data' => $data, 'pageInfo' => $this->getPageInfo()]);
     }
 
     public function ShowLoginPage()
@@ -286,4 +282,5 @@ class PindeltaController extends Controller
 			return redirect()->route('admin::index');
 		}
 	}
+
 }

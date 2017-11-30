@@ -65,8 +65,9 @@ class Categoryarea extends Model
 		$num = ($page-1)*$unit;
 
     	$e_categoryarea = Categoryarea::select(DB::raw('DISTINCT(categoryarea.id) as categoryarea_id'), 'categoryarea.cover', 'categoryarea.name', 'categoryarea.description')
-			->where([['category.status','open'], ['categoryarea.status','open']])
+			->where([['category.status','open'], ['categoryarea.status','open'], ['product.status', 'open']])
 			->leftJoin('category', 'category.categoryarea_id', '=' , 'categoryarea.id')
+			->leftJoin('product', 'category.id', '=' , 'product.category_id')
 			->groupBy('categoryarea.id')
 			->orderBy('categoryarea.priority', 'ASC')
             ->skip($num)->take($unit)

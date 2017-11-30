@@ -14,7 +14,6 @@
             <div class="row margin-bottom-40">
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12 col-sm-12">
-                    <h1>About us</h1>
                     <div class="content-page">
                         {!! $data['value'] !!}
                     </div>

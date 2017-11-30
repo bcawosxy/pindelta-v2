@@ -89,5 +89,4 @@ class Category extends Model
 		$e_category = Category::where([['category.status','open'], ['category.id', $id]])->first();
 		return json_decode($e_category, true);
 	}
-
 }

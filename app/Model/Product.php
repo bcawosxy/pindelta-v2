@@ -50,4 +50,21 @@ class Product extends Model
 
         return $return;
     }
+
+	/**
+	 *  取得一筆 Product
+	 * @param $id
+	 * @return Array
+	 */
+	public function getProduct($id)
+	{
+		$select = ['product.*', 'categoryarea.id AS cg_id', 'categoryarea.name AS cg_name', 'category.id AS c_id', 'category.name AS c_name'];
+		$product = Product::select($select)
+			->leftJoin('category', 'product.category_id', '=' , 'category.id')
+			->leftJoin('categoryarea', 'category.categoryarea_id', '=' , 'categoryarea.id')
+			->where([['product.status','open'], ['product.id', $id]])
+			->first();
+
+		return json_decode($product, true);
+	}
 }

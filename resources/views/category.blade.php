@@ -67,27 +67,6 @@
 
 @section('foot')
     <script type="text/javascript">
-//        var $grid = $('.product-list').masonry({
-//            // Masonry options...
-//            gutter : 0,
-//            itemSelector: '.item',
-//            horizontalOrder: true
-//        });
-//
-//        // get Masonry instance
-//        var msnry = $grid.data('masonry');
-//
-//        $grid.infiniteScroll({
-//            // Infinite Scroll options...
-//            path: '.pagination__next',
-//            append: '.item',
-//            outlayer: msnry,
-//            history: false,
-//            status: '.page-load-status',
-//            onInit: function() {
-//                this.on( 'load', function() {});
-//            }
-//        });
 
     </script>
 @endsection

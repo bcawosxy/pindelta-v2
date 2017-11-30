@@ -2,9 +2,9 @@ body.ecommerce {
 	background: #f9f9f9;
 }
 .ecommerce h1, .ecommerce h2, .ecommerce h3, .ecommerce h4, .ecommerce h5, .ecommerce h6 {
-	font-family: "PT Sans Narrow", sans-serif;
+	font-family: "Sans Narrow", sans-serif;
 	margin: 0 0 10px;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 }
 .ecommerce h1 {
 	font-size: 23px;
@@ -1090,8 +1090,8 @@ table .product-quantity .input-group {
 }
 
 .ecommerce .nav-tabs {
-	text-transform: uppercase;
-	font: 16px/1 "PT Sans Narrow", sans-serif;	
+	/*text-transform: uppercase;*/
+	font: 16px/1 "Sans Narrow", sans-serif;
 }
 .ecommerce .nav-tabs > li > a, .ecommerce .nav-tabs > li > a:hover, .ecommerce .nav-tabs > li > a:focus {
 	padding: 5px 15px 3px;

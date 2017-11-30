@@ -8,21 +8,21 @@
 <!-- Head BEGIN -->
 <head>
     <meta charset="utf-8">
-    <title>Metronic Shop UI</title>
+    <title>{{$pageInfo['title'] }}</title>
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta content="Metronic Shop UI description" name="description">
-    <meta content="Metronic Shop UI keywords" name="keywords">
+    <meta content="{{$pageInfo['description'] }}" name="description">
+    {{--<meta content="" name="keywords">--}}
     <meta content="keenthemes" name="author">
 
-    <meta property="og:site_name" content="-CUSTOMER VALUE-">
-    <meta property="og:title" content="-CUSTOMER VALUE-">
-    <meta property="og:description" content="-CUSTOMER VALUE-">
+    <meta property="og:site_name" content="Pindelta.com">
+    <meta property="og:title" content="{{$pageInfo['title'] }}">
+    <meta property="og:description" content="{{$pageInfo['description'] }}">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="-CUSTOMER VALUE-"><!-- link to image for socio -->
-    <meta property="og:url" content="-CUSTOMER VALUE-">
+    {{--<meta property="og:image" content="-CUSTOMER VALUE-">--}}
+    <meta property="og:url" content="http://www.pindelta.com">
 
     <link rel="shortcut icon" href="favicon.ico">
 

@@ -110,7 +110,7 @@
                 })
             }
         });
-        
+
         function checkValue(obj) {
             for (let value of obj) {
                 if(!$('#'+value).val().length) {

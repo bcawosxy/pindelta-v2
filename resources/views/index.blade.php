@@ -1,9 +1,7 @@
 @extends('layout.pindelta.master')
-
 @section('head')
     @include('layout.pindelta.head')
 @endsection
-
 @section('header')
     @include('layout.pindelta.header')
 @endsection
@@ -39,7 +37,11 @@
                                 </div>
                             @endforeach
                         @else
-                            {{ false }}
+                            <div class="col-md-12ths col-sm-12 col-xs-12 item">
+                                <div class="product-item">
+                                    <h3><a href="#">目前沒有任何商品</a></h3>
+                                </div>
+                            </div>
                         @endif
                     </div>
                     <div class="page-load-status">

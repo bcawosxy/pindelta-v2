@@ -487,7 +487,7 @@ body.page-header-fixed {
 	margin: 0 10px 0 0;
 	padding: 0;
 	float: left;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 }
 .header-navigation ul {
 	margin: 0;
